@@ -1,0 +1,6 @@
+<div>Search: <input ng-model="query"> </div>
+<ul>
+    <li ng-repeat="nutrient in nutrition.list.item | filter: query">
+       <a href="#/ingredients/{{nutrient.id}}">{{nutrient.name}}</a>
+    </li>
+</ul>
