@@ -1,0 +1,24 @@
+
+<p>{{ingredientReport.report.food.name}}</p>
+<ul>
+    <li ng-repeat="carb in carbs">
+        <span>{{carb.name}}</span><span> {{carb.value}}</span><span>{{carb.unit}}</span>
+    </li>
+</ul>
+<p> {{carbs[0].name}}</p>
+<table>
+    <th>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td>%DV</td>
+    </th>
+    <tr>
+        <td>Calories</td>
+        <td>{{carbs[0].value}}</td>
+        <td>{{carbs[0].unit}}</td>
+        <td>{{returnPercentage(carbs[0].value,302)}}</td>
+
+    </tr>
+
+</table>
