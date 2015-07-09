@@ -1,6 +1,26 @@
+
 <div>Search: <input ng-model="query"> </div>
+<div>Limit search results to <input ng-model="searchLimit"></div>
+<input >
+<div class="search-results">
 <ul>
-    <li class = 'ingredient-list' ng-repeat="nutrient in nutrition | filter: query">
-       <a href="#/ingredients/{{nutrient.ndbno}}">{{nutrient.name}}</a>
+    <li class = 'ingredient-list' ng-repeat="nutrient in nutrition | filter:{name:query}:startsWith | limitTo:searchLimit ">
+        <button class="custom-ingredient-button button" ng-click="populateNew(nutrient.ndbno, nutrient.name)"><a href="">Quick Add</a></button>
+        <button class="inspect-ingredient-button button"><a href="#/ingredients/{{nutrient.ndbno}}">Inspect</a></button>
+        <span class="nutrient-result-name">{{nutrient.name}}</span>
     </li>
 </ul>
+</div>
+
+<div class="custom-ingredients">
+    <div class="add-new-ingredient">
+        <div><span>Original Name</span>{{newIngredient.name}}</div>
+        <span>Custom Name</span><input ng-model="addIngredient">
+        <button class="button">Add</button><button class="button">Cancel</button>
+    </div>
+<ul>
+    <li class = 'ingredient-list' ng-repeat="ingredient in customIngredients.results | filter:{name:query}">
+        <a href="">{{ingredient.name}}</a>
+    </li>
+</ul>
+</div>

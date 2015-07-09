@@ -16,30 +16,43 @@ config(['$routeProvider', function($routeProvider) {
       var localData = localStorage.getItem('nutritionData') || undefined;
       if(localData){
         $scope.nutrition = JSON.parse(localData);
-        console.log('in local', $scope.nutrition);
+        //console.log('in local', $scope.nutrition);
       }else{
         $http.get('ingredients/ingredients.json').success(function(data) {
           localStorage.setItem('nutritionData',JSON.stringify(data));
           $scope.nutrition = data;
-          console.log($scope.nutrition);
+
         });
-      };
-        //$http.get('https://api.parse.com/1/classes/food_des?limit=1000',{
-        //    headers:{
-        //        'X-Parse-Application-Id': '6eWfrF9o99R8oPUNvFW6mXu6iJVoBzMS0c3dMZiu',
-        //        'X-Parse-REST-API-Key':'HSHbAZxn8igmoF6wpVOQ7QfoQhKeekL4IJguGNbS',
-        //    }
-        //}).success(function(data){
-        //    console.log('first: ',data);
-        //    $http.get('https://api.parse.com/1/classes/food_des?limit=1000&skip=1000',{
-        //        headers:{
-        //            'X-Parse-Application-Id': '6eWfrF9o99R8oPUNvFW6mXu6iJVoBzMS0c3dMZiu',
-        //            'X-Parse-REST-API-Key':'HSHbAZxn8igmoF6wpVOQ7QfoQhKeekL4IJguGNbS',
-        //        }
-        //    }).success(function(data){
-        //        console.log('second: ',data);
-        //    })
-        //});
+      }
+        $http.get('https://api.parse.com/1/classes/custom_ingredients',{
+            headers:{
+                'X-Parse-Application-Id': '6eWfrF9o99R8oPUNvFW6mXu6iJVoBzMS0c3dMZiu',
+                'X-Parse-REST-API-Key':'HSHbAZxn8igmoF6wpVOQ7QfoQhKeekL4IJguGNbS'
+            }
+        }).success(function(data){
+            $scope.customIngredients = data;
+            console.log(data);
+
+        });
+
+        $scope.searchLimit = 10;
+
+        $scope.startsWith = function (entireArray, myQuery) {
+            var lowerStr = (entireArray + "").toLowerCase();
+            return lowerStr.indexOf(myQuery.toLowerCase()) === 0;
+            //this returns true if it is found in the entireArray
+        };
+        $scope.newIngredient = {
+            name: null,
+            ndbno: null
+        };
+        $scope.populateNew = function(ndb,name){
+            console.log(ndb, name);
+            $scope.newIngredient.name = name;
+            $scope.newIngredient.ndbno = ndb;
+        }
+
+
 
 }])
     .controller('IngredientReportCtrl', ['$scope', '$http', '$routeParams', 'returnPercentage',function($scope,$http,$routeParams, returnPercentage){

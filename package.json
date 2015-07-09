@@ -20,8 +20,12 @@
   "scripts": {
     "postinstall": "bower install",
 
+    "watch-sass": "sass --watch app/styles",
+    "http-server": "http-server -a localhost -p 8000 -c-1",
+
+
     "prestart": "npm install",
-    "start": "http-server -a localhost -p 8000 -c-1",
+    "start": "npm run watch-sass & npm run http-server",
 
     "pretest": "npm install",
     "test": "karma start karma.conf.js",
