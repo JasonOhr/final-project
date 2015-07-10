@@ -12,7 +12,8 @@ config(['$routeProvider', function($routeProvider) {
   });
 }])
 
-.controller('View1Ctrl', ['$scope','$http',function($scope,$http) {
+.controller('View1Ctrl', ['$scope','$http','ParseConnector',function($scope,$http,ParseConnector
+    ) {
       var localData = localStorage.getItem('nutritionData') || undefined;
       if(localData){
         $scope.nutrition = JSON.parse(localData);
@@ -24,15 +25,9 @@ config(['$routeProvider', function($routeProvider) {
 
         });
       }
-        $http.get('https://api.parse.com/1/classes/custom_ingredients',{
-            headers:{
-                'X-Parse-Application-Id': '6eWfrF9o99R8oPUNvFW6mXu6iJVoBzMS0c3dMZiu',
-                'X-Parse-REST-API-Key':'HSHbAZxn8igmoF6wpVOQ7QfoQhKeekL4IJguGNbS'
-            }
-        }).success(function(data){
-            $scope.customIngredients = data;
-            console.log(data);
 
+        ParseConnector.getAll().success(function(data){
+            $scope.customIngredients = data;
         });
 
         $scope.searchLimit = 10;
@@ -47,10 +42,21 @@ config(['$routeProvider', function($routeProvider) {
             ndbno: null
         };
         $scope.populateNew = function(ndb,name){
-            console.log(ndb, name);
+
             $scope.newIngredient.name = name;
             $scope.newIngredient.ndbno = ndb;
-        }
+        };
+        $scope.saveIngredient = function(name,id){
+            ParseConnector.getNdbItem(id).success(function(data){
+                var nutrients = data.report.food.nutrients;
+                ParseConnector.create({name:name,ndbno:id,nutrients:nutrients}).success(function(data) {
+                        console.log(data);
+                })
+            });
+
+
+        };
+
 
 
 
