@@ -14,6 +14,7 @@ config(['$routeProvider', function($routeProvider) {
 
 .controller('View1Ctrl', ['$scope','$http','ParseConnector',function($scope,$http,ParseConnector
     ) {
+        //$filter('limitTo')()
       var localData = localStorage.getItem('nutritionData') || undefined;
       if(localData){
         $scope.nutrition = JSON.parse(localData);
@@ -49,7 +50,7 @@ config(['$routeProvider', function($routeProvider) {
         $scope.saveIngredient = function(name,id){
             ParseConnector.getNdbItem(id).success(function(data){
                 var nutrients = data.report.food.nutrients;
-                ParseConnector.create({name:name,ndbno:id,nutrients:nutrients}).success(function(data) {
+                ParseConnector.saveIng({name:name,ndbno:id,nutrients:nutrients,fg:fg}).success(function(data) {
                         console.log(data);
                 })
             });
@@ -68,7 +69,7 @@ config(['$routeProvider', function($routeProvider) {
           var carbNuts = [208,291,209,269,210,211,212,213,214,289];
           var proteinNuts = [203,501,502,503,504,505,506,507,508,509,510,511,512,513,514,515,516,517,518,521];
           var vitaminNuts = [318,320,321,322,334,337,338,415,417,432,431,435,418,401];
-          //var macroNuts = [208,]
+          var topoNuts = [208];
         $scope.carbs = _.filter(nutrients, function(nutrients){
             return _.contains(carbNuts, nutrients.nutrient_id)
         });

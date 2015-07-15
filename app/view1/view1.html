@@ -1,6 +1,6 @@
 
 <div>Search: <input ng-model="query"> </div>
-<div>Limit search results to <input ng-model="searchLimit"></div>
+<div>Limit search results to <input ng-model="searchLimit" size="5"></div>
 
 <div class="search-results">
 <ul>
@@ -18,7 +18,8 @@
         <div>
         Custom Name<input ng-model="addIngredient">
         </div>
-        <button class="button" ng-click="saveIngredient(addIngredient,newIngredient.ndbno)">Add</button><button class="button">Cancel</button>
+        <button class="button" ng-click="saveIngredient(addIngredient,newIngredient.ndbno)">Add</button>
+        <button class="button" ng-click="newIngredient=null">Cancel</button>
     </div>
 <ul>
     <li class = 'ingredient-list' ng-repeat="ingredient in customIngredients.results | filter:{name:query}">

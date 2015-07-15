@@ -24,7 +24,7 @@ angular.module('nutritionServices',[])
               return $http.get('http://api.nal.usda.gov/ndb/reports/?ndbno='+ id +'&type=f&format=json&api_key=z4jl046RdF4ydQqwBhipZbHkjsrKP27W94A5eIyf');
 
             },
-            create:function(data){
+            saveIng:function(data){
                 return $http.post('https://api.parse.com/1/classes/custom_ingredients/',data,{
                     headers: {
                         'X-Parse-Application-Id': '6eWfrF9o99R8oPUNvFW6mXu6iJVoBzMS0c3dMZiu',

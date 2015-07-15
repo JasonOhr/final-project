@@ -6,8 +6,20 @@ angular.module('nutritionApp', [
     'nutritionApp.ingredients',
     'nutritionApp.view2',
     'nutritionApp.version',
-    'nutritionServices'
-]).
-config(['$routeProvider', function($routeProvider) {
-  $routeProvider.otherwise({redirectTo: '/view2'});
-}]);
+    'nutritionServices',
+    'authenticateModule'
+])
+    .config(['$routeProvider', function($routeProvider) {
+      $routeProvider.otherwise({redirectTo: '/view2'});
+    }]);
+    //.run(function($rootScope){
+    //    $rootScope.$on('$routeChangeSuccess',function(){
+    //        var currentUser = Parse.User.current();
+    //        if(currentUser){
+    //            $rootScope.isLoggedIn = true;
+    //            $rootScope.currentUser = currentUser;
+    //        }else {
+    //            $rootScope.isLoggedIn = false;
+    //        }
+    //    })
+    //});

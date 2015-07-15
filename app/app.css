@@ -39,31 +39,44 @@ a:visited {
 
 
 /*Below are pre-existing styles*/
+ul.nav-bar {
+    margin-left: 10px;
+}
+.nav-bar>li{
+    border: none;
+    display: inline-block;
+}
+.sign-up {
+    margin-left: 20px;
+}
+.user-enter {
+    position: absolute;
+    top: 24px;
+    right: 10px;
+}
 .menu {
   list-style: none;
-  border-bottom: 0.1em solid black;
+  /*border-bottom: 0.1em solid black;*/
   margin-bottom: 2em;
   padding: 0 0 0.5em;
+    border: 1px solid black;
+    background-color: darkblue;
+    position: relative;
 }
 
-.menu:before {
-  content: "[";
-}
 
-.menu:after {
-  content: "]";
-}
+
+
 
 .menu > li {
-  display: inline;
+  ;
 }
 
 .menu > li:before {
-  content: "|";
   padding-right: 0.3em;
 }
 
-.menu > li:nth-child(1):before {
-  content: "";
-  padding: 0;
-}
+/*.menu > li:nth-child(1):before {*/
+  /*content: "";*/
+  /*padding: 0;*/
+/*}*/
