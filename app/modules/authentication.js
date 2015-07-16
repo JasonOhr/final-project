@@ -35,6 +35,9 @@ angular.module('authenticateModule',[])
                     localStorage.setItem('localLoggedIn',JSON.stringify(response.data));
                     console.log('check local: ', localStorage.getItem('localLoggedIn'));
 
+                },function(error){
+                    console.log(error.data.code);
+                    alert('those credentials is wrong');
                 })
         };
         $scope.logOut = function(){

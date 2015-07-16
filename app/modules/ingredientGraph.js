@@ -3,51 +3,57 @@
  */
 angular.module('ingredientGraph',[])
     .controller('IngredientCtrl',['$http','$scope',function($http,$scope){
+        $scope.chartOptions =  {
+            chart: { type: 'column' },
+            title: { text: 'Fruit Consumption' },
+            yAxis: { categories: ['Apples', 'Bananas', 'Oranges'] },
+            xAxis: { title: { text: 'Fruit eaten' } },
+            series: [
+                { name: 'Jane',
+                    data: [
+                        {name:'stuff',y:1, drilldown:'dudes'},
+                        {name:'other',y:5.9, drilldown:'guys'},
+                        {name:'other stuff',y:4,drilldown:'mofo'}]
+                },
+                { name: 'John',
+                    data: [{y:5}, {y:7}, {y:3}] }
+            ],
+            drilldown:{
+                series: [{
+                    id:'dudes',
+                    data:[
+                        ['little',3],['big',6],['whatever',2]
+                    ]
+                },{
+                    id:'guys',
+                    data:[
+                        ['girly',5],['big',6],['whatever',2]
+                    ]
+                },{
+                    id:'mofo',
+                    data:[
+                        ['week',1],['big',6],['whatever',2]
+                    ]
+                }
+                ]
 
+
+            }
+        };
     }])
-    .directive('ingredientGraph',function(){
+    .directive('ingredientChart',function(){
         return {
-            restrict: 'E',
-            scope:{
-                ingredients: '=ingredientReport'
-            },
-            templateUrl: 'templates/ingredient-graph.html'
-
-        }
-
-    })
-    .directive('psHighmap', function () {
-        return {
-            restrict: 'A',
-            replace: true,
-            scope: { options: '='},
-            controller: function ($scope, $element, $attrs) { },
-            template: '<div style="margin: 0 auto">Loading</div>',
-            link: function (scope, element, attrs) {
-
-                var chart = createMap(scope, element);
-
-                scope.$watch('options', function (options) {
-                    if (options)
-                        chart = createMap(scope, element);
-                }, true);
+            link: function(scope, el, attrs) {
+                var options = scope.$eval(attrs.ingredientChart);
+                console.log(options);
+                options.chart.renderTo = el[0];
+                new Highcharts.Chart(options);
             }
         }
+
     });
 
-function createMap(scope, element) {
-    var options = scope.options ? cloneObject(scope.options) : {};
-    setDeepValue(options, 'title.text', $j(element).attr('title'));
-    setDeepValue(options, 'xAxis.title.text', $j(element).attr('xaxis'));
-    setDeepValue(options, 'yAxis.title.text', $j(element).attr('yaxis'));
-    setDeepValue(options, 'chart.renderTo', $j(element)[0]);
-    if (!options.series) {
-        if (scope.series)
-            options.series = scope.series;
-        else
-            options.series = [{ data: scope.data, type: $j(element).attr('type') }];
-    }
-    var chart = new Highcharts.Map(options);
-    return chart;
-}
-;
+
+
+
+
