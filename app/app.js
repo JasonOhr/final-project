@@ -7,7 +7,8 @@ angular.module('nutritionApp', [
     'nutritionApp.view2',
     'nutritionApp.version',
     'nutritionServices',
-    'authenticateModule'
+    'authenticateModule',
+    'ingredientGraph'
 ])
     .config(['$routeProvider', function($routeProvider) {
       $routeProvider.otherwise({redirectTo: '/view2'});

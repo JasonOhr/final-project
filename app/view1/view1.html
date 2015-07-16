@@ -5,7 +5,7 @@
 <div class="search-results">
 <ul>
     <li class = 'ingredient-list' ng-repeat="nutrient in nutrition | filter:{name:query}:startsWith | limitTo:searchLimit ">
-        <button class="custom-ingredient-button button" ng-click="populateNew(nutrient.ndbno, nutrient.name)"><a href="">Quick Add</a></button>
+        <button class="custom-ingredient-button button" ng-click="populateNew(nutrient.ndbno, nutrient.name)" ng-show="isLoggedIn"><a href="">Quick Add</a></button>
         <button class="inspect-ingredient-button button"><a href="#/ingredients/{{nutrient.ndbno}}">Inspect</a></button>
         <span class="nutrient-result-name">{{nutrient.name}}</span>
     </li>
@@ -13,7 +13,7 @@
 </div>
 
 <div class="custom-ingredients">
-    <div class="add-new-ingredient">
+    <div class="add-new-ingredient" ng-show="isLoggedIn">
         <div><span>Original Name</span><span>{{newIngredient.name}}</span></div>
         <div>
         Custom Name<input ng-model="addIngredient">

@@ -47,7 +47,15 @@ ul.nav-bar {
     display: inline-block;
 }
 .sign-up {
-    margin-left: 20px;
+    margin: 0 20px;
+
+}
+.log-out {
+    margin-right: 110px;
+}
+.user-name {
+    color: darkgray;
+    margin-right: 20px;
 }
 .user-enter {
     position: absolute;

@@ -5,7 +5,10 @@ angular.module('nutritionApp.ingredients', ['ngRoute']).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/ingredients', {
     templateUrl: 'view1/view1.html',
-    controller: 'View1Ctrl'
+    controller: 'View1Ctrl',
+    access:{
+        requiresLogin: true
+    }
   }).when('/ingredients/:ndbno', {
     templateUrl: 'view1/ingredient.html',
     controller: 'IngredientReportCtrl'
@@ -65,6 +68,7 @@ config(['$routeProvider', function($routeProvider) {
     .controller('IngredientReportCtrl', ['$scope', '$http', '$routeParams', 'returnPercentage',function($scope,$http,$routeParams, returnPercentage){
       $http.get('http://api.nal.usda.gov/ndb/reports/?ndbno='+ $routeParams.ndbno +'&type=f&format=json&api_key=z4jl046RdF4ydQqwBhipZbHkjsrKP27W94A5eIyf').success(function(data){
           $scope.ingredientReport = data;
+          console.log($scope.ingredientReport);
           var nutrients =   $scope.ingredientReport.report.food.nutrients;
           var carbNuts = [208,291,209,269,210,211,212,213,214,289];
           var proteinNuts = [203,501,502,503,504,505,506,507,508,509,510,511,512,513,514,515,516,517,518,521];

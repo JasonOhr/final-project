@@ -1,7 +1,7 @@
 //Parse.initialize('6eWfrF9o99R8oPUNvFW6mXu6iJVoBzMS0c3dMZiu','HSHbAZxn8igmoF6wpVOQ7QfoQhKeekL4IJguGNbS')
 
 angular.module('authenticateModule',[])
-    .controller('AuthenticateCtrl',['$rootScope','$scope','$location','Userservice',function($rootScope,$scope,$location,Userservice){
+    .controller('AuthenticateCtrl',['$rootScope','$scope','Userservice',function($rootScope,$scope,Userservice){
         var localLoggedIn = localStorage.getItem('localLoggedIn') || false;
         console.log('localLoggedIn?', localLoggedIn);
         //console.log($rootScope.isLoggedIn);
@@ -44,7 +44,7 @@ angular.module('authenticateModule',[])
 
             Userservice
                 .logout($scope.user)
-                .then(function(response){
+                .then(function(){
                     localStorage.removeItem('localLoggedIn');
                     $scope.user = {};
                 })
@@ -89,7 +89,6 @@ angular.module('authenticateModule',[])
                         'X-Parse-REST-API-Key': 'HSHbAZxn8igmoF6wpVOQ7QfoQhKeekL4IJguGNbS'
                     }
                 });
-                //return Parse.User.logIn(credentials.username,credentials.password);
             },
             logout: function(credentials){
                 console.log('howdy',credentials.sessionToken);

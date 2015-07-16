@@ -25,14 +25,14 @@
         </ul>
 
         <div class="user-enter" ng-controller="AuthenticateCtrl">
-            <span>{{user.firstName}}</span>
+            <span class="user-name" ng-show="isLoggedIn">Hey {{user.firstName}}!</span>
             <input class="user-email-sign-in" ng-model="user.email" placeholder="User Email" ng-show="!isLoggedIn">
             <input type="password" class="user-password-sign-in" ng-model="user.password" placeholder="Password" ng-show="!isLoggedIn">
             <button class="sign-in button" ng-click="signIn(user)" ng-show="!isLoggedIn">Sign In</button>
             <button class="log-out button" ng-click="logOut(user)" ng-show="isLoggedIn">Log Out</button>
 
 
-            <button class="sign-up button" ng-click="signUp()">Sign Up</button>
+            <button class="sign-up button" ng-click="signUp()" ng-show="!isLoggedIn">Sign Up</button>
         </div>
     </div>
     <!--[if lt IE 7]>
@@ -45,6 +45,9 @@
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
+  <!--<script src="http://code.highcharts.com/highcharts.js"></script>-->
+  <!--<script src="http://code.highcharts.com/modules/data.js"></script>-->
+  <!--<script src="http://code.highcharts.com/modules/drilldown.js"></script>-->
   <script src="bower_components/angular/angular.js"></script>
   <!--<script src="http://www.parsecdn.com/js/parse-1.2.12.min.js"></script>-->
   <script src="bower_components/angular-route/angular-route.js"></script>
@@ -52,6 +55,8 @@
   <script src="app.js"></script>
   <script src="modules/authentication.js"></script>
   <script src="modules/services.js"></script>
+  <script src="modules/ingredientGraph.js"></script>
+
   <script src="view1/view1.js"></script>
   <script src="view2/view2.js"></script>
   <script src="components/version/version.js"></script>
