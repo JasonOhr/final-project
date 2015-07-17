@@ -22,7 +22,7 @@
     </tr>
 
 </table>
-<div class="ingredient-measure">
+<div class="ingredient-measure" option="charInfo">
     <select ng-options="item.label for item in measure"
             ng-model="measurement"
             ng-change="convertToNumber()"
@@ -40,7 +40,5 @@
 
     <!--<div ingredient-chart="chartOptions" style="width: 400px; height: 300px"></div>-->
 <!--</div>-->
-<div ng-controller="IngredientCtrl">
-<highchart id="chart1" config="chartConfig" style="width: 400px; height: 300px"></highchart>
 
-</div>
+<highchart id="chart1" config="chartConfig" style="width: 400px; height: 300px"></highchart>
