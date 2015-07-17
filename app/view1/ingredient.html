@@ -2,7 +2,7 @@
 <p>{{ingredientReport.report.food.name}}</p>
 <ul>
     <li ng-repeat="carb in carbs">
-        <span>{{carb.name}}</span><span> {{carb.value}}</span><span>{{carb.unit}}</span>
+        <span>{{carb.name}}</span><span> {{carb.value * measureMultiplier}}</span><span>{{carb.unit}}</span>
     </li>
 </ul>
 <p> {{carbs[0].name}}</p>
@@ -22,8 +22,25 @@
     </tr>
 
 </table>
-<!--<div class="ingredientChart"></div>-->
-<div ng-controller="IngredientCtrl">
+<div class="ingredient-measure">
+    <select ng-options="item.label for item in measure"
+            ng-model="measurement"
+            ng-change="convertToNumber()"
+            >
+    </select>
+<p>{{measureMultiplier}}</p>
+        <!--<option ng-repeat="item in measure" ng-value="item.value">{{item.label}}</option>-->
 
-    <div ingredient-chart="chartOptions" style="width: 400px; height: 300px"></div>
+
+
+</div>
+
+<!--<div class="ingredientChart"></div>-->
+<!--<div ng-controller="IngredientCtrl">-->
+
+    <!--<div ingredient-chart="chartOptions" style="width: 400px; height: 300px"></div>-->
+<!--</div>-->
+<div ng-controller="IngredientCtrl">
+<highchart id="chart1" config="chartConfig" style="width: 400px; height: 300px"></highchart>
+
 </div>

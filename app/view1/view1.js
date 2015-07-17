@@ -65,18 +65,31 @@ config(['$routeProvider', function($routeProvider) {
 
 
 }])
-    .controller('IngredientReportCtrl', ['$scope', '$http', '$routeParams', 'returnPercentage',function($scope,$http,$routeParams, returnPercentage){
+    .controller('IngredientReportCtrl', ['$rootScope','$scope', '$http', '$routeParams', 'returnPercentage',function($rootScope,$scope,$http,$routeParams, returnPercentage){
       $http.get('http://api.nal.usda.gov/ndb/reports/?ndbno='+ $routeParams.ndbno +'&type=f&format=json&api_key=z4jl046RdF4ydQqwBhipZbHkjsrKP27W94A5eIyf').success(function(data){
+
           $scope.ingredientReport = data;
-          console.log($scope.ingredientReport);
-          var nutrients =   $scope.ingredientReport.report.food.nutrients;
+          //console.log($scope.ingredientReport);
+          var nutrients =   $scope.ingredientReport.report.food.nutrients;//All nutrients and measuere for an ingredient
+
+          //console.log('nuts',nutrients[0].measures);
+          var preMeasure = nutrients[0].measures;
+          var grams = {eqv: 1, label: 'g'};
+          preMeasure.unshift(grams);
+          //console.log(preMeasure);
+          $scope.measure = preMeasure;
+          $scope.measurement = $scope.measure[0];
+          $scope.convertToNumber();
+
           var carbNuts = [208,291,209,269,210,211,212,213,214,289];
           var proteinNuts = [203,501,502,503,504,505,506,507,508,509,510,511,512,513,514,515,516,517,518,521];
-          var vitaminNuts = [318,320,321,322,334,337,338,415,417,432,431,435,418,401];
-          var topoNuts = [208];
+          $rootScope.vitaminNuts = [318,320,321,322,334,337,338,415,417,432,431,435,418,401];
+          var topNuts = {protein:208, carbs:203};
         $scope.carbs = _.filter(nutrients, function(nutrients){
             return _.contains(carbNuts, nutrients.nutrient_id)
         });
+          console.log('the carbs:',$scope.carbs);
+      $scope.vitamins =
           //$scope.returnPercentage = function(n,d){return (n/d).toFixed(2) + '%';}
             $scope.returnPercentage = function(n,d){
 
@@ -84,6 +97,11 @@ config(['$routeProvider', function($routeProvider) {
           }
 
       });
+        $scope.convertToNumber = function(){
+            $scope.measureMultiplier = ($scope.measurement.eqv)/100;
+
+        }
+        console.log('measurement',$scope.measurement);
       //console.log($routeParams.ndbno);
       //$scope.ingredient = $routeParams.id;
     }])

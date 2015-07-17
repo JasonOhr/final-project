@@ -38,17 +38,25 @@
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
+<div class="container">
 
     <div ng-view></div>
+
+</div>
+
 
 
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/4.1.7/adapters/standalone-framework.src.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/4.1.7/modules/drilldown.js"></script>
+
+    <!--<script src="http://rawgit.com/pablojim/highcharts-ng/master/src/highcharts-ng.js"></script>-->
+  <script src="http://code.highcharts.com/adapters/standalone-framework.js"></script>
+  <!--<script src="http://code.highcharts.com/modules/drilldown.js"></script>-->
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/highcharts-ng/src/highcharts.js"></script>
+    <script src="bower_components/highcharts-ng/src/highcharts-ng.js"></script>
   <script src="bower_components/underscore/underscore-min.js"></script>
   <script src="app.js"></script>
   <script src="modules/authentication.js"></script>

@@ -1,6 +1,6 @@
 //Parse.initialize('6eWfrF9o99R8oPUNvFW6mXu6iJVoBzMS0c3dMZiu','HSHbAZxn8igmoF6wpVOQ7QfoQhKeekL4IJguGNbS')
 
-angular.module('authenticateModule',[])
+angular.module('authenticateModule',["highcharts-ng"])
     .controller('AuthenticateCtrl',['$rootScope','$scope','Userservice',function($rootScope,$scope,Userservice){
         var localLoggedIn = localStorage.getItem('localLoggedIn') || false;
         console.log('localLoggedIn?', localLoggedIn);
