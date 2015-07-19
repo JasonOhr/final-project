@@ -52,8 +52,14 @@ config(['$routeProvider', function($routeProvider) {
             focus("customName")
 
         };
+        $scope.clearNewIngredient = function(){
+          $scope.newIngredient.name = null;
+            $scope.addIngredient = null;
+            focus('mainQuery');
+        };
         $scope.saveIngredient = function(name,id){
             focus("mainQuery");
+            $scope.clearNewIngredient();
             ParseConnector.getNdbItem(id).success(function(data){
                 var ingredient = data.report.food;
                 var nutrients = ingredient.nutrients;
@@ -93,22 +99,22 @@ config(['$routeProvider', function($routeProvider) {
           preMeasure.unshift(grams);
           $scope.measure = preMeasure;
           $scope.measurement = $scope.measure[0];
-          $scope.convertToNumber();
+          //$scope.convertToNumber();
 
           var carbNuts = [208,291,209,269,210,211,212,213,214,289];
           var proteinNuts = [203,501,502,503,504,505,506,507,508,509,510,511,512,513,514,515,516,517,518,521];
           $rootScope.vitaminNuts = [318,320,321,322,334,337,338,415,417,432,431,435,418,401];
           var topNuts = [208,204,606,695,601,307,205,291,269,203,318,401,328,323,430,404,405,406,415,417,418,301,303,304,305,306,307,309,312,315,317,601];
         $scope.topNuts = _.filter(nutrients, function(nutrients){
-            return _.contains(topNuts, nutrients.nutrient_id)
+            return _.contains(topNuts, nutrients.nutrient_id);
+            //this returns a list of the 'top' nutrients for an ingredient
         });
           console.log('the carbs:',$scope.topNuts);
-          $scope.chartInfo = _.map($scope.topNuts,function(newC){
-              return {y:newC.value, name:newC.name};
-          });
+
           $scope.chartInfoName = _.map($scope.chartInfo,function(newN){
-              console.log(newN.name);
-              return newN.name
+              //console.log(newN.name);
+              return newN.name;
+              //another array for highcharts to populate the x-axis
           });
           //console.log($scope.chartInfo);
 
@@ -118,13 +124,13 @@ config(['$routeProvider', function($routeProvider) {
               return returnPercentage(n,d);
           };
 
-          var nutrientArray = $scope.chartInfo;
+          //$scope.chartInfo;
           var categories = $scope.chartInfoName;
-          console.log(categories);
-          $scope.calculateNutrients = function(){
+          console.log('nut Array: ',$scope.chartInfo);
 
-          };
+
           $scope.chartConfig =  {
+
               options: {
                   chart: {
                       type: 'column'
@@ -151,7 +157,7 @@ config(['$routeProvider', function($routeProvider) {
               },
               series: [
                   {
-                      data: nutrientArray,
+                      data: [],
                       tooltip: {
                           pointFormat: '<p>{point.y}</p>'
 
@@ -168,12 +174,26 @@ config(['$routeProvider', function($routeProvider) {
               loading: false
 
           };
+          console.log('preLoad: ', $scope.chartConfig.series[0].data);
+          $scope.calculateNutrients = function(){
+              //console.log($scope.measureMultiplier);
+              var topNuts;
+              $scope.chartConfig.series[0].data = _.map($scope.topNuts,function(newC){
+                  newC.value = newC.value * $scope.measureMultiplier;
+
+                  return {y:newC.value, name:newC.name};
+                  //this builds a new object for highcharts to easily consume
+              });
+              console.log('clog some stuff',$scope.chartConfig.series[0].data);
+          };
+          $scope.convertToNumber();
+
           console.log('measurement',$scope.measurement);
 
       });
         $scope.convertToNumber = function(){
             $scope.measureMultiplier = ($scope.measurement.eqv)/100;
-            //calculateNutrients();
+            $scope.calculateNutrients();
 
         };
       //console.log($routeParams.ndbno);

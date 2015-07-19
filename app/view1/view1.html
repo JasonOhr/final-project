@@ -19,7 +19,7 @@
         Custom Name<input id="customName" ng-model="addIngredient">
         </div>
         <button class="button" ng-click="saveIngredient(addIngredient,newIngredient.ndbno)">Add</button>
-        <button class="button" ng-click="newIngredient=null">Cancel</button>
+        <button class="button" ng-click="clearNewIngredient()">Cancel</button>
     </div>
 <ul>
     <li class = 'ingredient-list' ng-repeat="ingredient in customIngredients.results | filter:{name:query} | orderBy:'name'">
