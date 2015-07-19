@@ -84,16 +84,19 @@ config(['$routeProvider', function($routeProvider) {
 
 }])
     .controller('IngredientReportCtrl', ['$rootScope','$scope', '$http', '$routeParams', 'returnPercentage',function($rootScope,$scope,$http,$routeParams, returnPercentage){
-      $http.get('http://api.nal.usda.gov/ndb/reports/?ndbno='+ $routeParams.ndbno +'&type=f&format=json&api_key=z4jl046RdF4ydQqwBhipZbHkjsrKP27W94A5eIyf').success(function(data){
+        $http.get('ingredients/rda.json').success(function(data){
+           $scope.rda = data;
+        });
+      $http.get('http://api.nal.usda.gov/ndb/reports/?ndbno='+ $routeParams.ndbno +'&type=f&format=json&api_key=z4jl046RdF4ydQqwBhipZbHkjsrKP27W94A5eIyf').success(function(data) {
           $scope.measureMultiplier = .01;
           $scope.ingredientReport = data;
           //console.log($scope.ingredientReport);
-          var nutrients =   $scope.ingredientReport.report.food.nutrients;//All nutrients and measure for an ingredient
+          var nutrients = $scope.ingredientReport.report.food.nutrients;//All nutrients and measure for an ingredient
 
           //console.log('nuts',nutrients);
           var preMeasure = nutrients[0].measures;
           //var caloriesPerGram = Number((nutrients.value/100).toFixed.toFixed(2));
-            //console.log('cal',caloriesPerGram);
+          //console.log('cal',caloriesPerGram);
           //console.log('preMeasure',preMeasure);
           var grams = {eqv: 1, label: 'g'};
           preMeasure.unshift(grams);
@@ -101,18 +104,41 @@ config(['$routeProvider', function($routeProvider) {
           $scope.measurement = $scope.measure[0];
           //$scope.convertToNumber();
 
-          var carbNuts = [208,291,209,269,210,211,212,213,214,289];
-          var proteinNuts = [203,501,502,503,504,505,506,507,508,509,510,511,512,513,514,515,516,517,518,521];
-          $rootScope.vitaminNuts = [318,320,321,322,334,337,338,415,417,432,431,435,418,401];
-          var topNuts = [208,204,606,695,601,307,205,291,269,203,318,401,328,323,430,404,405,406,415,417,418,301,303,304,305,306,307,309,312,315,317,601];
-        $scope.topNuts = _.filter(nutrients, function(nutrients){
-            return _.contains(topNuts, nutrients.nutrient_id);
-            //this returns a list of the 'top' nutrients for an ingredient
-        });
-          console.log('the carbs:',$scope.topNuts);
+          var carbNuts = [208, 291, 209, 269, 210, 211, 212, 213, 214, 289];
+          var proteinNuts = [203, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510, 511, 512, 513, 514, 515, 516, 517, 518, 521];
+          $rootScope.vitaminNuts = [318, 320, 321, 322, 334, 337, 338, 415, 417, 432, 431, 435, 418, 401];
+          var topNuts = [208, 204, 606, 695, 601, 307, 205, 291, 269, 203, 318, 401, 328, 323, 430, 404, 405, 406, 415, 417, 418, 301, 303, 304, 305, 306, 307, 309, 312, 315, 317, 601];
+          $scope.topNuts = _.filter(nutrients, function (nutrients) {
+              return _.contains(topNuts, nutrients.nutrient_id);
+              //this returns a list of the 'top' nutrients for an ingredient
+          });
+          var dude = _.chain($scope.topNuts)
+
+              .filter(function (data) {
+                  var hey = _.pluck($scope.rda,'ndbno');
+                  //console.log('rda',hey);
+                  //console.log('again',hey,data.nutrient_id);
+                  return _.contains(hey, data.nutrient_id);
+               })
+              .map(function(data){
+                  
+                  var thang = _.find($scope.rda,function(rda){
+                      //console.log('in each', data.nutrient_id);
+                     return rda.ndbno===data.nutrient_id ;
+                        //console.log('hello',rda.rda);
+
+
+                  });
+                    data.rda = thang.rda
+                  return data ;
+              })
+              .value();
+          //console.log('rda',$scope.rda)
+          console.log('new dude',dude);
+
 
           $scope.chartInfoName = _.map($scope.chartInfo,function(newN){
-              //console.log(newN.name);
+              console.log('newC',newC);
               return newN.name;
               //another array for highcharts to populate the x-axis
           });
@@ -126,9 +152,7 @@ config(['$routeProvider', function($routeProvider) {
 
           //$scope.chartInfo;
           var categories = $scope.chartInfoName;
-          console.log('nut Array: ',$scope.chartInfo);
-
-
+          //console.log('categories: ',$scope.chartInfoName);
           $scope.chartConfig =  {
 
               options: {
@@ -174,17 +198,17 @@ config(['$routeProvider', function($routeProvider) {
               loading: false
 
           };
-          console.log('preLoad: ', $scope.chartConfig.series[0].data);
           $scope.calculateNutrients = function(){
               //console.log($scope.measureMultiplier);
-              var topNuts;
-              $scope.chartConfig.series[0].data = _.map($scope.topNuts,function(newC){
+              var topNuts = JSON.parse(JSON.stringify($scope.topNuts));
+              //clone needed to keep original content correct
+              $scope.chartConfig.series[0].data = _.map(topNuts,function(newC){
                   newC.value = newC.value * $scope.measureMultiplier;
 
                   return {y:newC.value, name:newC.name};
                   //this builds a new object for highcharts to easily consume
               });
-              console.log('clog some stuff',$scope.chartConfig.series[0].data);
+              //console.log('clog some stuff',$scope.chartConfig.series[0].data);
           };
           $scope.convertToNumber();
 

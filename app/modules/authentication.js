@@ -3,17 +3,17 @@
 angular.module('authenticateModule',["highcharts-ng"])
     .controller('AuthenticateCtrl',['$rootScope','$scope','Userservice',function($rootScope,$scope,Userservice){
         var localLoggedIn = localStorage.getItem('localLoggedIn') || false;
-        console.log('localLoggedIn?', localLoggedIn);
+        //console.log('localLoggedIn?', localLoggedIn);
         //console.log($rootScope.isLoggedIn);
         if(!localLoggedIn){
-            console.log('here?');
+           // console.log('here?');
             $scope.user = {'username': '','password': '','email': '','firstName': '','lastName':''};
         }else {
             $scope.user = JSON.parse(localLoggedIn);
             $rootScope.isLoggedIn = true;
 
-            console.log('am i logged in now',$scope.user);
-            console.log('main log in',$rootScope.isLoggedIn);
+           // console.log('am i logged in now',$scope.user);
+            //console.log('main log in',$rootScope.isLoggedIn);
         }
 
 
@@ -22,7 +22,7 @@ angular.module('authenticateModule',["highcharts-ng"])
         //$scope.showRegistrationForm = function(){ $scope.registerUserMode = true;}
         $scope.signIn = function(){
             $scope.user.username = $scope.user.email;
-            console.log('creds:',$scope.user);
+            //console.log('creds:',$scope.user);
             Userservice
                 .login($scope.user)
                 .then(function(response) {
