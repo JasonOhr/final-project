@@ -15,7 +15,7 @@ config(['$routeProvider', function($routeProvider) {
   });
 }])
 
-.controller('View1Ctrl', ['$scope','$http','ParseConnector',function($scope,$http,ParseConnector
+.controller('View1Ctrl', ['$scope','$timeout','$http','ParseConnector','focus',function($scope,$timeout,$http,ParseConnector,focus
     ) {
         //$filter('limitTo')()
       var localData = localStorage.getItem('nutritionData') || undefined;
@@ -33,7 +33,7 @@ config(['$routeProvider', function($routeProvider) {
         ParseConnector.getAll().success(function(data){
             $scope.customIngredients = data;
         });
-
+        focus("mainQuery")
         $scope.searchLimit = 10;
 
         $scope.startsWith = function (entireArray, myQuery) {
@@ -49,12 +49,24 @@ config(['$routeProvider', function($routeProvider) {
 
             $scope.newIngredient.name = name;
             $scope.newIngredient.ndbno = ndb;
+            focus("customName")
+
         };
         $scope.saveIngredient = function(name,id){
+            focus("mainQuery");
             ParseConnector.getNdbItem(id).success(function(data){
-                var nutrients = data.report.food.nutrients;
-                ParseConnector.saveIng({name:name,ndbno:id,nutrients:nutrients,fg:fg}).success(function(data) {
-                        console.log(data);
+                var ingredient = data.report.food;
+                var nutrients = ingredient.nutrients;
+                //console.log('nutrient, ingredien:',nutrients, ingredient.fg);
+                ParseConnector.saveIng({name:name,ndbno:id,nutrients:nutrients, fg:ingredient.fg}).success(function() {
+                    //console.log('after save',data);
+                    ParseConnector.getAll().success(function(data){
+                        $timeout(function(){
+
+                            $scope.customIngredients = data;
+                        },0);
+
+                    });
                 })
             });
 
@@ -67,7 +79,7 @@ config(['$routeProvider', function($routeProvider) {
 }])
     .controller('IngredientReportCtrl', ['$rootScope','$scope', '$http', '$routeParams', 'returnPercentage',function($rootScope,$scope,$http,$routeParams, returnPercentage){
       $http.get('http://api.nal.usda.gov/ndb/reports/?ndbno='+ $routeParams.ndbno +'&type=f&format=json&api_key=z4jl046RdF4ydQqwBhipZbHkjsrKP27W94A5eIyf').success(function(data){
-
+          $scope.measureMultiplier = .01;
           $scope.ingredientReport = data;
           //console.log($scope.ingredientReport);
           var nutrients =   $scope.ingredientReport.report.food.nutrients;//All nutrients and measure for an ingredient
@@ -106,9 +118,12 @@ config(['$routeProvider', function($routeProvider) {
               return returnPercentage(n,d);
           };
 
-          var nutrients = $scope.chartInfo;
+          var nutrientArray = $scope.chartInfo;
           var categories = $scope.chartInfoName;
           console.log(categories);
+          $scope.calculateNutrients = function(){
+
+          };
           $scope.chartConfig =  {
               options: {
                   chart: {
@@ -136,7 +151,7 @@ config(['$routeProvider', function($routeProvider) {
               },
               series: [
                   {
-                      data: nutrients,
+                      data: nutrientArray,
                       tooltip: {
                           pointFormat: '<p>{point.y}</p>'
 
@@ -158,6 +173,7 @@ config(['$routeProvider', function($routeProvider) {
       });
         $scope.convertToNumber = function(){
             $scope.measureMultiplier = ($scope.measurement.eqv)/100;
+            //calculateNutrients();
 
         };
       //console.log($routeParams.ndbno);
@@ -166,5 +182,16 @@ config(['$routeProvider', function($routeProvider) {
 
         return function(n,d){
           return (n/d).toFixed(2) + '%';
+        }
+    })
+    .factory('focus',function($timeout,$window){
+        return function(id){
+            $timeout(function(){
+                var element = $window.document.getElementById(id);
+                if(element){
+                    element.focus();
+                    element.select();
+                }
+            })
         }
     });
