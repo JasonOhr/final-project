@@ -112,7 +112,7 @@ config(['$routeProvider', function($routeProvider) {
               return _.contains(topNuts, nutrients.nutrient_id);
               //this returns a list of the 'top' nutrients for an ingredient
           });
-          var dude = _.chain($scope.topNuts)
+          $scope.topNuts = _.chain($scope.topNuts)
 
               .filter(function (data) {
                   var hey = _.pluck($scope.rda,'ndbno');
@@ -129,12 +129,14 @@ config(['$routeProvider', function($routeProvider) {
 
 
                   });
-                    data.rda = thang.rda
+                    data.rda = thang.rda;
+                    data.name = thang.name;
+                  //replaced the long stock nutrient name with a custome name
                   return data ;
               })
               .value();
           //console.log('rda',$scope.rda)
-          console.log('new dude',dude);
+          console.log('new dude',$scope.topNuts);
 
 
           $scope.chartInfoName = _.map($scope.chartInfo,function(newN){
@@ -203,7 +205,9 @@ config(['$routeProvider', function($routeProvider) {
               var topNuts = JSON.parse(JSON.stringify($scope.topNuts));
               //clone needed to keep original content correct
               $scope.chartConfig.series[0].data = _.map(topNuts,function(newC){
-                  newC.value = newC.value * $scope.measureMultiplier;
+                  //console.log('rda',newC.rda);
+                  //console.log('value per',newC.value * $scope.measureMultiplier);
+                  newC.value = (newC.value * $scope.measureMultiplier)/newC.rda;
 
                   return {y:newC.value, name:newC.name};
                   //this builds a new object for highcharts to easily consume
