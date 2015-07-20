@@ -1,5 +1,6 @@
 
 <div>Search: <input id="mainQuery" ng-model="query"> </div>
+<label><input class="search-checkbox" type="checkbox" ng-model="checkbox"/> Starts with</label>
 <div>Limit search results to <input  ng-model="searchLimit" size="5"></div>
 
 <div class="search-results">
@@ -23,7 +24,7 @@
     </div>
 <ul>
     <li class = 'ingredient-list' ng-repeat="ingredient in customIngredients.results | filter:{name:query} | orderBy:'name'">
-        <a href="">{{ingredient.name}}</a>
+        <a href="#/ingredients/{{ingredient.ndbno}}">{{ingredient.name}}</a>
     </li>
 </ul>
 

@@ -37,8 +37,12 @@ config(['$routeProvider', function($routeProvider) {
         $scope.searchLimit = 10;
 
         $scope.startsWith = function (entireArray, myQuery) {
-            var lowerStr = (entireArray + "").toLowerCase();
-            return lowerStr.indexOf(myQuery.toLowerCase()) === 0;
+            if($scope.checkbox){
+                var lowerStr = (entireArray + "").toLowerCase();
+                return lowerStr.indexOf(myQuery.toLowerCase()) === 0;
+            }
+            else return (myQuery.toLowerCase()) === 0;
+
             //this returns true if it is found in the entireArray
         };
         $scope.newIngredient = {
@@ -98,7 +102,7 @@ config(['$routeProvider', function($routeProvider) {
           //var caloriesPerGram = Number((nutrients.value/100).toFixed.toFixed(2));
           //console.log('cal',caloriesPerGram);
           //console.log('preMeasure',preMeasure);
-          var grams = {eqv: 1, label: 'g'};
+          var grams = {eqv: 1, label: 'g',qty:1};
           preMeasure.unshift(grams);
           $scope.measure = preMeasure;
           $scope.measurement = $scope.measure[0];
@@ -106,28 +110,45 @@ config(['$routeProvider', function($routeProvider) {
 
           var carbNuts = [208, 291, 209, 269, 210, 211, 212, 213, 214, 289];
           var proteinNuts = [203, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510, 511, 512, 513, 514, 515, 516, 517, 518, 521];
-          $rootScope.vitaminNuts = [318, 320, 321, 322, 334, 337, 338, 415, 417, 432, 431, 435, 418, 401];
-          var topNuts = [208, 204, 606, 695, 601, 307, 205, 291, 269, 203, 318, 401, 328, 323, 430, 404, 405, 406, 415, 417, 418, 301, 303, 304, 305, 306, 307, 309, 312, 315, 317, 601];
+          $scope.vitaminNuts = [318, 320, 321, 322, 334, 337, 338, 415, 417, 432, 431, 435, 418, 401];
+          var topNuts = [318, 401, 328, 323, 430, 404, 405, 406, 415, 417, 418, 301, 303, 304, 305, 306, 307, 309, 312, 315, 317];
+          var macroNuts =[208, 203, 204, 606, 695, 601, 307, 205, 291, 269];
           $scope.topNuts = _.filter(nutrients, function (nutrients) {
               return _.contains(topNuts, nutrients.nutrient_id);
               //this returns a list of the 'top' nutrients for an ingredient
           });
+          $scope.macroNuts = _.filter(nutrients,function(nutrients){
+              return _.contains(macroNuts,nutrients.nutrient_id);
+          });
+          $scope.macroNuts = _.chain($scope.macroNuts)
+              .filter(function (data) {
+                  var hey = _.pluck($scope.rda,'ndbno');
+                  return _.contains(hey, data.nutrient_id);//verifying the nutrient is present
+              })
+              .map(function(data){
+
+                  var thang = _.find($scope.rda,function(rda){
+                      //return the info of the ndbno numbers where they match so that I can add the rda amount into the object
+                      return rda.ndbno===data.nutrient_id ;
+                  });
+                  data.rda = thang.rda;
+                  data.name = thang.name;
+                  //replaced the long stock nutrient name with a custome name
+                  return data ;
+              })
+              .value();
+          console.log('macro',$scope.macroNuts);
           $scope.topNuts = _.chain($scope.topNuts)
 
               .filter(function (data) {
                   var hey = _.pluck($scope.rda,'ndbno');
-                  //console.log('rda',hey);
-                  //console.log('again',hey,data.nutrient_id);
-                  return _.contains(hey, data.nutrient_id);
+                  return _.contains(hey, data.nutrient_id);//verifying the nutrient is present
                })
               .map(function(data){
                   
                   var thang = _.find($scope.rda,function(rda){
-                      //console.log('in each', data.nutrient_id);
+                      //return the info of the ndbno numbers where they match so that I can add the rda amount into the object
                      return rda.ndbno===data.nutrient_id ;
-                        //console.log('hello',rda.rda);
-
-
                   });
                     data.rda = thang.rda;
                     data.name = thang.name;
@@ -136,21 +157,21 @@ config(['$routeProvider', function($routeProvider) {
               })
               .value();
           //console.log('rda',$scope.rda)
-          console.log('new dude',$scope.topNuts);
+          console.log('top nuts',$scope.topNuts);
 
 
           $scope.chartInfoName = _.map($scope.chartInfo,function(newN){
-              console.log('newC',newC);
+              //console.log('newC',newC);
               return newN.name;
               //another array for highcharts to populate the x-axis
           });
           //console.log($scope.chartInfo);
 
 
-         $scope.vitamins =
-            $scope.returnPercentage = function(n,d){
-              return returnPercentage(n,d);
-          };
+         //$scope.vitamins =
+         //   $scope.returnPercentage = function(n,d){
+         //     return returnPercentage(n,d);
+         // };
 
           //$scope.chartInfo;
           var categories = $scope.chartInfoName;
@@ -185,42 +206,52 @@ config(['$routeProvider', function($routeProvider) {
                   {
                       data: [],
                       tooltip: {
-                          pointFormat: '<p>{point.y}</p>'
+                          pointFormat: '<p>{point.y}%</p>'
 
                       }
                   }
               ],
 
               title: {
-                  text:'Nutrition Breakdown'
+                  text:'Percentage of Recommended Daily Allowances'
               },
               xAxis: {
                   categories:categories
+
+              },
+              yAxis: {
+                  tickAmount: 10,
+                  title: {
+                      text:"Percent"
+                  }
               },
               loading: false
 
           };
+          //console.log($scope.topNuts);
           $scope.calculateNutrients = function(){
               //console.log($scope.measureMultiplier);
               var topNuts = JSON.parse(JSON.stringify($scope.topNuts));
               //clone needed to keep original content correct
               $scope.chartConfig.series[0].data = _.map(topNuts,function(newC){
                   //console.log('rda',newC.rda);
-                  //console.log('value per',newC.value * $scope.measureMultiplier);
-                  newC.value = (newC.value * $scope.measureMultiplier)/newC.rda;
-
+                  //console.log('value per',newC.value);
+                  newC.value = (newC.value * $scope.measureMultiplier * $scope.measurement.qty)/newC.rda;
+                  //this converts to percentage RDA. I removed the div by 100 in multiplier to skip step of converting back to %
+                  newC.value = Math.round(newC.value*100)/100;
+                  //this converts to 2 decimals
                   return {y:newC.value, name:newC.name};
-                  //this builds a new object for highcharts to easily consume
+                  //this builds a new object for highcharts to easily consume and ensures it refreshes
               });
               //console.log('clog some stuff',$scope.chartConfig.series[0].data);
           };
           $scope.convertToNumber();
 
-          console.log('measurement',$scope.measurement);
+          //console.log('measurement',$scope.measurement);
 
       });
         $scope.convertToNumber = function(){
-            $scope.measureMultiplier = ($scope.measurement.eqv)/100;
+            $scope.measureMultiplier = ($scope.measurement.eqv);
             $scope.calculateNutrients();
 
         };

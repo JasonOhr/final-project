@@ -1,39 +1,34 @@
 
 <p>{{ingredientReport.report.food.name}}</p>
-<!--<ul>-->
-    <!--<li ng-repeat="carb in carbs">-->
-        <!--<span>{{carb.name}}</span><span> {{carb.value * measureMultiplier}}</span><span>{{carb.unit}}</span>-->
-    <!--</li>-->
-<!--</ul>-->
-<p> {{carbs[0].name}}</p>
-<table>
-    <th>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td>%DV</td>
-    </th>
-    <tr>
-        <td>Calories</td>
-        <td>{{carbs[0].value}}</td>
-        <td>{{carbs[0].unit}}</td>
-        <td>{{returnPercentage(carbs[0].value,302)}}</td>
-
-    </tr>
-
-</table>
 <div class="ingredient-measure" option="charInfo">
     <select ng-options="item.label for item in measure"
             ng-model="measurement"
             ng-change="convertToNumber()"
             >
     </select>
-<p>{{measureMultiplier}}</p>
-        <!--<option ng-repeat="item in measure" ng-value="item.value">{{item.label}}</option>-->
-
-
+    <p>{{measureMultiplier}}</p>
 
 </div>
+<div class="nutrition-facts">
+    <h1>Nutrition Facts</h1>
+    <p>Serving Size <input ng-model="measurement.qty" size="3" ng-change="convertToNumber()"> {{measurement.label}}</p>
+</div>
+
+<div class="nutrition-box">
+    <table>
+        <tr ng-repeat="ingredient in macroNuts">
+            <td>{{ingredient.name}}</td>
+            <td>{{measurement.qty * ingredient.value * measureMultiplier/100 | number:2}} {{ingredient.unit}}</td>
+            <td>{{measurement.qty * ingredient.value * measureMultiplier/(ingredient.rda) | number:0}}%</td>
+        </tr>
+    </table>
+    <!--<ul>-->
+        <!--<li ng-repeat="ingredient in macroNuts">{{ingredient.name}} {{ingredient.value}} {{ingredient.unit}}</li>-->
+    <!--</ul>-->
+</div>
+
+
+
 
 <!--<div class="ingredientChart"></div>-->
 <!--<div ng-controller="IngredientCtrl">-->
@@ -41,4 +36,4 @@
     <!--<div ingredient-chart="chartOptions" style="width: 400px; height: 300px"></div>-->
 <!--</div>-->
 
-<highchart id="chart1" config="chartConfig" style="width: 800px; height: 300px"></highchart>
+<highchart id="chart1" config="chartConfig" style="width: 800px; height: 400px"></highchart>

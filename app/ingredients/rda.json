@@ -29,6 +29,6 @@
   {"name": "Fiber", "rda":38, "rda-max":88, "label":"g","ndbno":291},
   {"name": "Sugar", "rda":50, "rda-max":3, "label":"g","ndbno":269},
   {"name": "Sodium", "rda":2300, "rda-max":3, "label":"mg","ndbno":307},
-  {"name": "Energy", "rda":2000, "rda-max":5000, "label":"g","ndbno":208}
+  {"name": "Calories", "rda":2000, "rda-max":5000, "label":"cal","ndbno":208}
 
 ]

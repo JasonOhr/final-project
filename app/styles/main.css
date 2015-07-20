@@ -13,4 +13,12 @@ html {
     content: "";
     display: table; }
 
+.nutrition-box {
+  width: 30%;
+  border: 1px solid black;
+  margin: 0 10px; }
+
+.nutrition-box li {
+  font-size: 1em; }
+
 /*# sourceMappingURL=main.css.map */
