@@ -21,4 +21,32 @@ html {
 .nutrition-box li {
   font-size: 1em; }
 
+.currentIngredients {
+  width: 40%;
+  float: right;
+  margin-right: 20px; }
+
+.currentIngReturn {
+  border: 1px solid black;
+  height: 200px;
+  overflow: scroll; }
+
+.recipeIngredients {
+  width: 40%;
+  border: 1px solid black;
+  height: 200px;
+  overflow: scroll; }
+
+.remove-ing {
+  color: red;
+  border: 1px solid black;
+  float: right;
+  margin-right: 15px;
+  background-color: lightgray;
+  width: 20px;
+  height: 20px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%; }
+
 /*# sourceMappingURL=main.css.map */

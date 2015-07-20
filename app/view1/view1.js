@@ -33,15 +33,14 @@ config(['$routeProvider', function($routeProvider) {
         ParseConnector.getAll().success(function(data){
             $scope.customIngredients = data;
         });
-        focus("mainQuery")
+        focus("mainQuery");
         $scope.searchLimit = 10;
 
         $scope.startsWith = function (entireArray, myQuery) {
-            if($scope.checkbox){
+
                 var lowerStr = (entireArray + "").toLowerCase();
                 return lowerStr.indexOf(myQuery.toLowerCase()) === 0;
-            }
-            else return (myQuery.toLowerCase()) === 0;
+
 
             //this returns true if it is found in the entireArray
         };
@@ -66,13 +65,13 @@ config(['$routeProvider', function($routeProvider) {
             $scope.clearNewIngredient();
             ParseConnector.getNdbItem(id).success(function(data){
                 var ingredient = data.report.food;
+                console.log(ingredient);
                 var nutrients = ingredient.nutrients;
-                //console.log('nutrient, ingredien:',nutrients, ingredient.fg);
+                console.log('nutrient, ingredien:',nutrients, ingredient.fg);
                 ParseConnector.saveIng({name:name,ndbno:id,nutrients:nutrients, fg:ingredient.fg}).success(function() {
                     //console.log('after save',data);
                     ParseConnector.getAll().success(function(data){
                         $timeout(function(){
-
                             $scope.customIngredients = data;
                         },0);
 
@@ -137,7 +136,7 @@ config(['$routeProvider', function($routeProvider) {
                   return data ;
               })
               .value();
-          console.log('macro',$scope.macroNuts);
+          //console.log('macro',$scope.macroNuts);
           $scope.topNuts = _.chain($scope.topNuts)
 
               .filter(function (data) {
