@@ -1,5 +1,5 @@
 [
-  {"name": "A", "rda":3000, "rda-max":10000, "label":"IU","ndbno":318},
+  {"name": "A", "rda":5000, "rda-max":10000, "label":"IU","ndbno":318},
   {"name": "Folate", "rda":400, "rda-max":1000, "label":"mcg","ndbno":417},
   {"name": "C", "rda":90, "rda-max":2000, "label":"mg","ndbno":401},
   {"name": "D", "rda":600, "rda-max":4000, "label":"IU","ndbno":328},
@@ -23,7 +23,7 @@
   {"name": "Cholesterol", "rda":200, "rda-max":300, "label":"mg","ndbno":601},
   {"name": "Total Fat", "rda":10, "rda-max":65, "label":"g","ndbno":204},
   {"name": "Saturated Fat", "rda":2, "rda-max":20, "label":"g","ndbno":606},
-  {"name": "Trans Fat", "rda":0, "rda-max":3, "label":"g","ndbno":695},
+  {"name": "Trans Fat", "rda":0, "rda-max":3, "label":"g","ndbno":605},
   {"name": "Protein", "rda":56, "rda-max":70, "label":"g","ndbno":203},
   {"name": "Carbohydrates", "rda":130, "rda-max":300, "label":"g","ndbno":205},
   {"name": "Fiber", "rda":38, "rda-max":88, "label":"g","ndbno":291},

@@ -120,10 +120,11 @@ config(['$routeProvider', function($routeProvider) {
               return _.contains(macroNuts,nutrients.nutrient_id);
           });
           $scope.macroNuts = _.chain($scope.macroNuts)
-              .filter(function (data) {
-                  var hey = _.pluck($scope.rda,'ndbno');
-                  return _.contains(hey, data.nutrient_id);//verifying the nutrient is present
-              })
+              //.filter(function (data) {
+              //    var hey = _.pluck($scope.rda,'ndbno');
+              //
+              //    return   _.contains(hey, data.nutrient_id);//verifying the nutrient is present true/false
+              //})
               .map(function(data){
 
                   var thang = _.find($scope.rda,function(rda){
@@ -132,7 +133,7 @@ config(['$routeProvider', function($routeProvider) {
                   });
                   data.rda = thang.rda;
                   data.name = thang.name;
-                  //replaced the long stock nutrient name with a custome name
+                  //replaced the long stock nutrient name with a custom name
                   return data ;
               })
               .value();
@@ -151,7 +152,7 @@ config(['$routeProvider', function($routeProvider) {
                   });
                     data.rda = thang.rda;
                     data.name = thang.name;
-                  //replaced the long stock nutrient name with a custome name
+                  //replaced the long stock nutrient name with a custom name
                   return data ;
               })
               .value();
