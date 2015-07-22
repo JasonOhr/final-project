@@ -49,4 +49,40 @@ html {
   -moz-border-radius: 50%;
   border-radius: 50%; }
 
+.fa-leaf {
+  color: seagreen; }
+
+.fa-plus-circle {
+  color: #000088; }
+
+a.other-pages,
+a.current-page {
+  height: 25px;
+  min-width: 15px;
+  padding: 0 2px;
+  display: inline-block;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  margin-left: 5px; }
+
+a.other-pages {
+  background-color: lightgray;
+  color: black;
+  border: 1px solid black; }
+
+a.current-page,
+a.current-page2 {
+  background-color: #000088;
+  color: lightgray;
+  border: 1px solid darkgray; }
+
+a.current-page:hover {
+  color: white;
+  background-color: royalblue; }
+
+.custom-shell {
+  height: 700px;
+  border: 1px solid black; }
+
 /*# sourceMappingURL=main.css.map */

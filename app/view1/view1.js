@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('nutritionApp.ingredients', ['ngRoute']).
+angular.module('nutritionApp.ingredients', ['ngRoute'])
 
-config(['$routeProvider', function($routeProvider) {
+.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/ingredients', {
     templateUrl: 'view1/view1.html',
     controller: 'View1Ctrl',
@@ -14,10 +14,30 @@ config(['$routeProvider', function($routeProvider) {
     controller: 'IngredientReportCtrl'
   });
 }])
+    .constant("activePageClass", 'current-page')
+    .constant("ingredientPageCount",10)
+    .controller('View1Ctrl', ['$scope','$timeout','$http','ParseConnector','focus','$filter','ingredientPageCount','activePageClass',function($scope,$timeout,$http,ParseConnector,focus,$filter,ingredientPageCount,activePageClass) {
 
-.controller('View1Ctrl', ['$scope','$timeout','$http','ParseConnector','focus',function($scope,$timeout,$http,ParseConnector,focus
-    ) {
         //$filter('limitTo')()
+      $scope.selectedPage = 1;
+      $scope.selectedPage2 = 1;
+      $scope.pageSize = ingredientPageCount;
+      $scope.selectPage = function(newPage,n){
+          $scope.selectedPage = newPage;
+      };
+      $scope.selectPage2 = function(newPage,n){
+          $scope.selectedPage2 = newPage;
+      };
+      $scope.getPageClass = function(page){
+          var dude = $scope.selectedPage == page ? activePageClass : "";
+
+          return dude
+      };
+      $scope.getPageClass2 = function(page){
+           var dude = $scope.selectedPage2 == page ? activePageClass : "";
+
+          return dude
+      };
       var localData = localStorage.getItem('nutritionData') || undefined;
       if(localData){
         $scope.nutrition = JSON.parse(localData);
@@ -272,5 +292,32 @@ config(['$routeProvider', function($routeProvider) {
                     element.select();
                 }
             })
+        }
+    })
+    .filter("range",function($filter){
+        return function(data, page, size){
+            if (angular.isArray(data) && angular.isNumber(page) && angular.isNumber(size)){
+                var start_index = (page - 1) * size;
+                if(data.length < start_index) {
+                    return [];
+                }else {
+                    return $filter("limitTo")(data.splice(start_index),size)
+                }
+            }else {
+                return data;
+            }
+        }
+    })
+    .filter("pageCount", function(){
+        return function(data,size){
+            if(angular.isArray(data)){
+                var result = [];
+                for (var i = 0;i < Math.ceil(data.length / size); i++){
+                    result.push(i);
+                }
+                return result;
+            }else {
+                return data;
+            }
         }
     });
