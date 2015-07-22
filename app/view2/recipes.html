@@ -1,4 +1,4 @@
-<p>Recipes</p>
+<p>Recipes </p>
 <div class="currentIngredients">
   <input type="text" ng-model="query"/>
     <div class="currentIngReturn">
@@ -8,19 +8,23 @@
     </div>
 </div>
 <div class="recipeIngredients">
-    <ul>
-        <li ng-repeat="newIng in recipeIngredients">
-            <input ng-model="qty"  size="4">
-            <select ng-options="item.label for item in measure"
-                    ng-model="measurement"
-                    ng-change=""
-                    >
-            </select>
-            {{newIng.name}}
-            <span class="remove-ing" ng-click="removeIng(newIng.id)">&#x2718</span>
-        </li>
-    </ul>
+    <single-ingredient ingredient="recipe.ingredients" qty = 'qty' measurement = 'measurement' on-change="convertToNumber()" on-remove="removeIng(id) ">
+
+
+        <!--<li ng-repeat="newIng in recipe.ingredients">-->
+            <!--<input ng-model="qty"  size="4">-->
+            <!--<select ng-options="item.label for item in recipe.ingredients[0].measures"-->
+                    <!--ng-model="measurement"-->
+                    <!--ng-change=""-->
+                    <!-->-->
+            <!--</select>-->
+            <!--{{newIng.name}}-->
+            <!--<span class="remove-ing" ng-click="removeIng(newIng.id)">&#x2718</span>-->
+        <!--</li>-->
+
+    </single-ingredient>
 </div>
+
 <highchart id="chart1" config="chartConfig" style="width: 800px; height: 400px"></highchart>
 
 

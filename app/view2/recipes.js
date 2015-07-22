@@ -24,34 +24,39 @@ angular.module('nutritionApp.view2', ['ngRoute'])
     }).success(function(){
         var topNuts = [318, 401, 328, 323, 430, 404, 405, 406, 415, 417, 418, 301, 303, 304, 305, 306, 307, 309, 312, 315, 317];
         var macroNuts =[208, 203, 204, 606, 695, 601, 307, 205, 291, 269];
+
+
         $scope.qty = 1;
         $scope.measureMultiplier = .01;
-        $scope.recipeIngredients = [];
-        $scope.recipeIngredients.totalled = [];
+        $scope.recipe = [];
+        $scope.recipe.ingredients = [];
+        $scope.recipe.totalled = [{ing:5}];
        // console.log($scope.customIngredients);
 
         $scope.addIngredient = function(ndb,name,nutrients){
 
-            var id = $scope.recipeIngredients.length + 1;
-            console.log('now here',nutrients[0].measures);
+            var id = $scope.recipe.ingredients.length +1;
+            //console.log('now here',id);
             var preMeasure = nutrients[0].measures;
             var grams = {eqv: 1, label: 'g',qty:1};
             preMeasure.unshift(grams);
             $scope.measure = preMeasure;
+            var measurement = nutrients[0].measures;
             $scope.measurement = nutrients[0].measures;
             $scope.topNuts = $scope.attachRda(topNuts,nutrients);
             console.log('im here',$scope.topNuts);
             //var totalledNuts =
 
 
-            $scope.recipeIngredients.push({id:id,name:name,ndbno:ndb,nutrients:nutrients})
+            $scope.recipe.ingredients.push({id:id,name:name,ndbno:ndb,nutrients:nutrients,measures:measurement})
             //$scope.customIngredients;
-            console.log($scope.recipeIngredients);
+            console.log('hi',$scope.recipe);
 
         };
         $scope.removeIng = function(id){
+            //console.log('hi trying',id);
             //console.log($scope.recipeIngredients.id);
-            $scope.recipeIngredients = _.reject($scope.recipeIngredients,function(ing){
+            $scope.recipe.ingredients = _.reject($scope.recipe.ingredients,function(ing){
                 return ing.id === id; //returns all but the rejected ingredient w/this id
             });
 
@@ -78,7 +83,7 @@ angular.module('nutritionApp.view2', ['ngRoute'])
 
         };
         $scope.totalledNuts = function(){
-            var totalledNuts = JSON.parse(JSON.stringify($scope.recipeIngredients.totalled));
+            var totalledNuts = JSON.parse(JSON.stringify($scope.recipe.ingredients.totalled));
             _.map(totalledNuts,function(newC){
                 newC.value = (newC.value * $scope.measureMultiplier * $scope.measurement.qty)/newC.rda;
                 newC.value = Math.round(newC.value*100)/100;
@@ -86,7 +91,7 @@ angular.module('nutritionApp.view2', ['ngRoute'])
         };
         $scope.calculateNutrients = function(){
             //console.log($scope.measureMultiplier);
-            var totalledNuts = JSON.parse(JSON.stringify($scope.recipeIngredients.totalled));
+            var totalledNuts = JSON.parse(JSON.stringify($scope.recipe.ingredients.totalled));
             //clone needed to keep original content correct
             $scope.chartConfig.series[0].data = _.map(totalledNuts,function(newC){
                 //console.log('rda',newC.rda);
@@ -101,8 +106,10 @@ angular.module('nutritionApp.view2', ['ngRoute'])
             //console.log('clog some stuff',$scope.chartConfig.series[0].data);
         };
         $scope.convertToNumber = function(){
+
             $scope.measureMultiplier = ($scope.measurement.eqv);
-            $scope.calculateNutrients();
+            console.log('measureMult',$scope.measureMultiplier);
+            //$scope.calculateNutrients();
 
         };
         $scope.chartConfig =   {
@@ -157,10 +164,35 @@ angular.module('nutritionApp.view2', ['ngRoute'])
             loading: false
 
         };
+        $scope.products = [
+            {name:'Apple',category:'fruit'},
+            {name:'Banana',category:'fruit'}
+        ]
 
     });
 
 }])
     .directive('singleIngredient',[ function(){
+        return {
 
+            scope: {
+                ingredient : '=',
+                qty : '=qty',
+                measurement : '=measurement',
+                'removeIng': '&onRemove',
+                'convertToNumber': '&onChange'
+
+
+            },
+            restrict: "AE",
+            transclude: true,
+            template: ' <ul><li ng-repeat="item in ingredient" >' +
+
+                '<input ng-model="qty" size="4" >{{item.name}}' +
+                '<select  ng-options="item.label for item in ingredient[{{item.id - 1}}].measures" ng-model="measurement" ng-change="convertToNumber()"></select>' +
+
+                '<span</span>' +
+                '</li></ul>'
+
+        }
     }]);
