@@ -9,7 +9,7 @@ angular.module('nutritionApp.view2', ['ngRoute'])
   });
 }])
 
-.controller('RecipeCtrl', ['$scope','ParseConnector','$http',function($scope,ParseConnector,$http) {
+.controller('RecipeCtrl', ['$scope','ParseConnector','$http','focus',function($scope,ParseConnector,$http,focus) {
     $http.get('ingredients/rda.json').success(function(data){
        $scope.rda = data;//this needs to be moved to a service or similar
     });
@@ -49,7 +49,9 @@ angular.module('nutritionApp.view2', ['ngRoute'])
             //$scope.customIngredients;
             //console.log('hi',$scope.recipe.ingredients);
 
+
         };
+
         $scope.removeIng = function(id){
             //console.log('hi trying',id);
             //console.log($scope.recipeIngredients.id);
@@ -93,16 +95,16 @@ angular.module('nutritionApp.view2', ['ngRoute'])
                 $scope.recipe.ingredients.totalled = _.map(oTotal,function(old){
                     //console.log('aTotal',old.y)
                     if(old.name == undefined){
-                        console.log('hoho');
-                        return {name:nTotal.name, y:nTotal.y};
+                        //console.log('hoho');
+                        return {name:nTotal.name, y:nTotal.y, rda:nTotal.rda};
                     }else {
-                        console.log('bad year');
-                        console.log('yes', nTotal);
+                        //console.log('bad year');
+                        //console.log('yes', nTotal);
                         var nue = _.findWhere(nTotal, {name: old.name});
                         if (nue) {
-                            console.log('cool', nue, old.y, nue.y);
+                            //console.log('cool', nue, old.y, nue.y);
                             var y = old.y + nue.y;
-                            return {name: old.name, y: y};
+                            return {name: old.name, y: y, rda:old.rda};
                         } else {
                             return old;
                         }
@@ -112,14 +114,17 @@ angular.module('nutritionApp.view2', ['ngRoute'])
                 $scope.recipe.ingredients.totalled = _.map(nTotal,function(n){
 
                         console.log('new year');
-                        return { name:n.name, y:n.y};
+                        return { name:n.name, y:n.y, rda: n.rda};
 
                 });
             }
 
             console.log('newTotal',$scope.recipe.ingredients.totalled);
+            $scope.calculateChart(macroNuts,$scope.recipe.ingredients.totalled)
+
         };
         $scope.calculateTotalNutrients = function(eqv,qty,nutrients){
+            //This is used to calculate the ingredients nutritional values once added and
            // console.log('eqv,qty',eqv,qty)
             var totalledNuts = JSON.parse(JSON.stringify(nutrients));
             //clone needed to keep original content correct
@@ -130,24 +135,30 @@ angular.module('nutritionApp.view2', ['ngRoute'])
                 //this converts to percentage RDA. I removed the div by 100 in multiplier to skip step of converting back to %
                 newC.value = Math.round(newC.value*100)/100;
                 //this converts to 2 decimals
-                return {name:newC.name, y:newC.value };
+                return {name:newC.name, y:newC.value,rda:newC.rda};
 
             });
             $scope.addNutrientsToTotal(totalled, $scope.recipe.ingredients.totalled)
 
         };
-        $scope.calculateNutrients = function(eqv,qty){
+        $scope.calculateChart = function(nutArray,nutrientTotal){
             //console.log($scope.measureMultiplier);
+            $scope.topNuts = _.filter(nutrients, function (nutrients) {
+                return _.contains(topNuts, nutrients.nutrient_id);
+                //this returns a list of the 'top' nutrients for an ingredient
+            });
             //var totalledNuts = JSON.parse(JSON.stringify($scope.recipe.ingredients));
             //clone needed to keep original content correct
-            $scope.chartConfig.series[0].data = _.map(totalled,function(newC){
+            $scope.chartConfig.series[0].data = _.map(nutrientTotal,function(newC){
                 //console.log('rda',newC.rda);
-                //console.log('value per',newC.value);
-                newC.value = (qty * eqv)/newC.rda;
+                console.log('value per',newC);
+                newC.value = (newC.y)/newC.rda;
                 //this converts to percentage RDA. I removed the div by 100 in multiplier to skip step of converting back to %
-                //newC.value = Math.round(newC.value*100)/100;
+                newC.value = Math.round(newC.value*100)/100;
                 //this converts to 2 decimals
-                return {y:newC.value, name:newC.name};
+                var dude = {y:newC.value, name:newC.name};
+                console.log(dude);
+                return dude;
                 //this builds a new object for highcharts to easily consume and ensures it refreshes
             });
             //console.log('clog some stuff',$scope.chartConfig.series[0].data);

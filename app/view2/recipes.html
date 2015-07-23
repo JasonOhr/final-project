@@ -12,14 +12,14 @@
 
 
         <li ng-repeat="newIng in recipe.ingredients">
-            <input ng-model="qty"  size="4">
+            <input ng-model="qty"  size="3">
             <select ng-options="item.label for item in recipe.ingredients[$index].measures"
                     ng-model="measurement"
                     ng-change="convertToNumber($index,measurement,qty)"
                     >
             </select>
             {{newIng.name}}
-            <span class="remove-ing" ng-click="removeIng(newIng.id)">&#x2718</span>
+            <!--<span class="remove-ing" ng-click="removeIng(newIng.id)">&#x2718</span>-->
         </li>
 
     <!--</single-ingredient>-->

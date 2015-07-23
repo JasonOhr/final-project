@@ -1,9 +1,13 @@
 @import "../bower_components/bourbon/app/assets/stylesheets/bourbon.scss";
 @import "../bower_components/neat/app/assets/stylesheets/neat.scss";
 
+* {
+  outline-color: green;
+}
 body {
   background: url("../images/hero.jpg");
 }
+
 .container {
   @include outer-container(980px);
   border: 4px solid green;
@@ -32,6 +36,9 @@ body {
   float: right;
   margin-right: 20px;
 
+}
+.currentIngredients input {
+  text-align: center;
 }
 .currentIngReturn {
   border: 1px solid black;
@@ -99,4 +106,96 @@ a.current-page:hover {
 .custom-shell {
   height: 700px;
   border: 1px solid black;
+}
+/* app css stylesheet */
+ul {
+  padding: 0;
+}
+li {
+  list-style: none;
+  margin-bottom: 5px;
+  padding: 7px;
+  border-bottom: 1px solid black;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+a:visited {
+  color: black;
+}
+.custom-ingredients {
+  margin: -24px 0 0 600px;
+}
+.search-results {
+  float: left;
+  width: 45%;
+}
+
+.button {
+  height: 23px;
+  font-size: 14px;
+  /*-webkit-border-radius: 3px;*/
+  /*-moz-border-radius: 3px;*/
+  /*border-radius: 3px;;*/
+}
+.nutrient-result-name {
+  //display: inline-block;
+  vertical-align: top;
+  width: 26em;
+  padding-left: 8px;
+}
+
+
+/*Below are pre-existing styles*/
+ul.nav-bar {
+  margin-left: 10px;
+}
+.nav-bar>li{
+  border: none;
+  display: inline-block;
+}
+.sign-up {
+  margin: 0 20px;
+
+}
+.log-out {
+  margin-right: 110px;
+}
+.user-name {
+  color: darkgray;
+  margin-right: 20px;
+}
+.user-enter {
+  position: absolute;
+  top: 24px;
+  right: 10px;
+}
+.menu {
+  list-style: none;
+  /*border-bottom: 0.1em solid black;*/
+  margin-bottom: 2em;
+  padding: 0 0 0.5em;
+  border: 1px solid black;
+  background-color: darkblue;
+  position: relative;
+}
+
+.menu > li {
+;
+}
+
+.menu > li:before {
+  padding-right: 0.3em;
+}
+
+/*.menu > li:nth-child(1):before {*/
+/*content: "";*/
+/*padding: 0;*/
+/*}*/
+.page-button{
+
+  color: black;
+  background-color: grey;
+
 }
