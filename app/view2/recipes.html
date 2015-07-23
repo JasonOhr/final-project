@@ -3,26 +3,26 @@
   <input type="text" ng-model="query"/>
     <div class="currentIngReturn">
       <ul>
-        <li ng-repeat="ingredient in customIngredients | filter:{name:query}"><button ng-click="addIngredient(ingredient.ndbno,ingredient.name,ingredient.nutrients)">&#x2713</button>{{ingredient.name}}</li>
+        <li ng-repeat="ingredient in customIngredients | filter:{name:query} | orderBy:'name' "><button ng-click="addIngredient(ingredient.ndbno,ingredient.name,ingredient.nutrients)">&#x2713</button>{{ingredient.name}}</li>
       </ul>
     </div>
 </div>
 <div class="recipeIngredients">
-    <single-ingredient ingredient="recipe.ingredients" qty = 'qty' measurement = 'measurement' on-change="convertToNumber()" on-remove="removeIng(id) ">
+    <!--<single-ingredient ingredient="recipe.ingredients" qty = 'qty' measurement = 'measurement' on-change="convertToNumber()" on-remove="removeIng(id) ">-->
 
 
-        <!--<li ng-repeat="newIng in recipe.ingredients">-->
-            <!--<input ng-model="qty"  size="4">-->
-            <!--<select ng-options="item.label for item in recipe.ingredients[0].measures"-->
-                    <!--ng-model="measurement"-->
-                    <!--ng-change=""-->
-                    <!-->-->
-            <!--</select>-->
-            <!--{{newIng.name}}-->
-            <!--<span class="remove-ing" ng-click="removeIng(newIng.id)">&#x2718</span>-->
-        <!--</li>-->
+        <li ng-repeat="newIng in recipe.ingredients">
+            <input ng-model="qty"  size="4">
+            <select ng-options="item.label for item in recipe.ingredients[$index].measures"
+                    ng-model="measurement"
+                    ng-change="convertToNumber($index,measurement,qty)"
+                    >
+            </select>
+            {{newIng.name}}
+            <span class="remove-ing" ng-click="removeIng(newIng.id)">&#x2718</span>
+        </li>
 
-    </single-ingredient>
+    <!--</single-ingredient>-->
 </div>
 
 <highchart id="chart1" config="chartConfig" style="width: 800px; height: 400px"></highchart>

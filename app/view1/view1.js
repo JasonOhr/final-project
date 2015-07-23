@@ -116,11 +116,11 @@ angular.module('nutritionApp.ingredients', ['ngRoute'])
           //console.log($scope.ingredientReport);
           var nutrients = $scope.ingredientReport.report.food.nutrients;//All nutrients and measure for an ingredient
 
-          //console.log('nuts',nutrients);
+          console.log('nuts',nutrients);
           var preMeasure = nutrients[0].measures;
           //var caloriesPerGram = Number((nutrients.value/100).toFixed.toFixed(2));
           //console.log('cal',caloriesPerGram);
-          //console.log('preMeasure',preMeasure);
+          console.log('preMeasure',preMeasure);
           var grams = {eqv: 1, label: 'g',qty:1};
           preMeasure.unshift(grams);
           $scope.measure = preMeasure;
@@ -131,7 +131,7 @@ angular.module('nutritionApp.ingredients', ['ngRoute'])
           var proteinNuts = [203, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510, 511, 512, 513, 514, 515, 516, 517, 518, 521];
           $scope.vitaminNuts = [318, 320, 321, 322, 334, 337, 338, 415, 417, 432, 431, 435, 418, 401];
           var topNuts = [318, 401, 328, 323, 430, 404, 405, 406, 415, 417, 418, 301, 303, 304, 305, 306, 307, 309, 312, 315, 317];
-          var macroNuts =[208, 203, 204, 606, 695, 601, 307, 205, 291, 269];
+          var macroNuts =[208, 203, 204, 606, 605, 601, 307, 205, 291, 269];
           $scope.topNuts = _.filter(nutrients, function (nutrients) {
               return _.contains(topNuts, nutrients.nutrient_id);
               //this returns a list of the 'top' nutrients for an ingredient
@@ -177,7 +177,7 @@ angular.module('nutritionApp.ingredients', ['ngRoute'])
               })
               .value();
           //console.log('rda',$scope.rda)
-          console.log('top nuts',$scope.topNuts);
+          //console.log('top nuts',$scope.topNuts);
 
 
           $scope.chartInfoName = _.map($scope.chartInfo,function(newN){
@@ -255,7 +255,7 @@ angular.module('nutritionApp.ingredients', ['ngRoute'])
               //clone needed to keep original content correct
               $scope.chartConfig.series[0].data = _.map(topNuts,function(newC){
                   //console.log('rda',newC.rda);
-                  //console.log('value per',newC.value);
+                  console.log('value per',newC.name, newC.value);
                   newC.value = (newC.value * $scope.measureMultiplier * $scope.measurement.qty)/newC.rda;
                   //this converts to percentage RDA. I removed the div by 100 in multiplier to skip step of converting back to %
                   newC.value = Math.round(newC.value*100)/100;
