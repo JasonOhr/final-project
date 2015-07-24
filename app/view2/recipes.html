@@ -1,12 +1,13 @@
-<h1 class="title">Recipes </h1>
+<h1 class="title">Recipes Builder</h1>
 <div class="currentIngredients">
-  <input class="input-query" type="text" ng-model="query"/>
+  Search: <input class="input-query" type="text" ng-model="query"/>
     <div class="currentIngReturn">
       <ul>
         <li ng-repeat="ingredient in customIngredients | filter:{name:query} | orderBy:'name' "><button ng-click="addIngredient(ingredient.ndbno,ingredient.name,ingredient.nutrients)">&#x2713</button>{{ingredient.name}}</li>
       </ul>
     </div>
 </div>
+<!--<p class="new-recipe-ingredients">Recipes ingredients end up here</p>-->
 <div class="recipeIngredients">
     <!--<single-ingredient ingredient="recipe.ingredients" qty = 'qty' measurement = 'measurement' on-change="convertToNumber()" on-remove="removeIng(id) ">-->
 

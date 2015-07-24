@@ -72,7 +72,7 @@ angular.module('nutritionApp.ingredients', ['ngRoute'])
 
             $scope.newIngredient.name = name;
             $scope.newIngredient.ndbno = ndb;
-            focus("customName")
+            focus("customName");
 
         };
         $scope.clearNewIngredient = function(){
@@ -200,7 +200,22 @@ angular.module('nutritionApp.ingredients', ['ngRoute'])
 
               options: {
                   chart: {
-                      type: 'column'
+                      backgroundColor: 'rgba(250,250,250,.5)',
+                      borderColor: '#000000',
+                      borderWidth: 1,
+                      borderRadius: 5,
+                      type: 'column',
+                      shadow: false
+                  },
+                  plotOptions: {
+                      column: {
+                          borderColor: '#16542B',
+                          color: '#238708',
+                          dataLabels: {
+                              enabled: true,
+                              format: '{y} %'
+                          }
+                      }
                   },
                   drilldown:{
                       series: [{

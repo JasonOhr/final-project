@@ -3,7 +3,7 @@
 
 <div class="nutrition-facts">
     <h1>Nutrition Facts</h1>
-    <p>Serving Size <input ng-model="measurement.qty" size="3" ng-change="convertToNumber()">
+    <p>Serving Size <input id="search-ing" class="input-query" ng-model="measurement.qty" size="3" ng-change="convertToNumber()">
     <span class="ingredient-measure" option="charInfo">
     <select ng-options="item.label for item in measure"
             ng-model="measurement"
@@ -14,11 +14,11 @@
     </p>
 </div>
 
-<div class="nutrition-box">
+<div class="nutrition-box ">
     <table>
         <tr ng-repeat="ingredient in macroNuts">
-            <td>{{ingredient.name}}</td>
-            <td>{{measurement.qty * ingredient.value * measureMultiplier/100 | number:2}} {{ingredient.unit}}</td>
+            <td class="table-nutrition-name">{{ingredient.name}}</td>
+            <td class="table-ingredient-amount">{{measurement.qty * ingredient.value * measureMultiplier/100 | number:2}} {{ingredient.unit}}</td>
             <td>{{measurement.qty * ingredient.value * measureMultiplier/(ingredient.rda) | number:0}}%</td>
         </tr>
     </table>

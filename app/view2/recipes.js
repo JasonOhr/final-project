@@ -25,7 +25,7 @@ angular.module('nutritionApp.view2', ['ngRoute'])
         var topNuts = [318, 401, 328, 323, 430, 404, 405, 406, 415, 417, 418, 301, 303, 304, 305, 306, 307, 309, 312, 315, 317];
         var macroNuts =[208, 203, 204, 606, 605, 601, 307, 205, 291, 269];
         var customNuts = macroNuts.concat(topNuts);
-
+        focus("searchIng");
         $scope.qty = 1;
         $scope.measureMultiplier = .01;
         $scope.recipe = [];
@@ -215,7 +215,7 @@ angular.module('nutritionApp.view2', ['ngRoute'])
                 },
                 plotOptions: {
                     column: {
-                        borderColor: '#000000',
+                        borderColor: '#16542B',
                         color: '#238708',
                         dataLabels: {
                             enabled: true,
