@@ -179,12 +179,25 @@ a:visited {
 
 /*Below are pre-existing styles*/
 ul.nav-bar {
-  margin-left: 10px; }
+  margin: 0 0 -9px 140px;
+  font-family: 'Kaushan Script', cursive;
+  color: white; }
 
 .nav-bar > li {
   border: none;
   display: inline-block; }
 
+button.link-btn {
+  border-radius: 50%;
+  height: 30px;
+  width: 32px;
+  background-color: #497255;
+  margin-left: 5px; }
+
+.fa-spoon {
+  color: black; }
+
+g
 .sign-up {
   margin: 0 20px; }
 
@@ -192,13 +205,14 @@ ul.nav-bar {
   margin-right: 110px; }
 
 .user-name {
-  color: darkgray;
+  color: white;
+  font-family: 'Kaushan Script', cursive;
   margin-right: 20px; }
 
 .user-enter {
   position: absolute;
-  top: 24px;
-  right: 10px; }
+  top: 11px;
+  right: 48px; }
 
 .menu {
   list-style: none;
