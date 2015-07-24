@@ -1,6 +1,6 @@
-<p>Recipes </p>
+<h1 class="title">Recipes </h1>
 <div class="currentIngredients">
-  <input type="text" ng-model="query"/>
+  <input class="input-query" type="text" ng-model="query"/>
     <div class="currentIngReturn">
       <ul>
         <li ng-repeat="ingredient in customIngredients | filter:{name:query} | orderBy:'name' "><button ng-click="addIngredient(ingredient.ndbno,ingredient.name,ingredient.nutrients)">&#x2713</button>{{ingredient.name}}</li>
@@ -25,6 +25,6 @@
     <!--</single-ingredient>-->
 </div>
 
-<highchart id="chart1" config="chartConfig" style="width: 800px; height: 400px"></highchart>
+<highchart id="chart2" config="chartConfig" style="width: 865px; height: 300px"></highchart>
 
 

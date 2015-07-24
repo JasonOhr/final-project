@@ -224,6 +224,7 @@ angular.module('nutritionApp.ingredients', ['ngRoute'])
               },
               series: [
                   {
+                      name: 'Nutrients',
                       data: [],
                       tooltip: {
                           pointFormat: '<p>{point.y}%</p>'

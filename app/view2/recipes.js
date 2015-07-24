@@ -96,7 +96,7 @@ angular.module('nutritionApp.view2', ['ngRoute'])
                     //console.log('aTotal',old.y)
                     if(old.name == undefined){
                         //console.log('hoho');
-                        return {name:nTotal.name, y:nTotal.y, rda:nTotal.rda};
+                        return {name:nTotal.name, y:nTotal.y, rda:nTotal.rda, nutrient_id:nTotal.nutrient_id};
                     }else {
                         //console.log('bad year');
                         //console.log('yes', nTotal);
@@ -104,7 +104,7 @@ angular.module('nutritionApp.view2', ['ngRoute'])
                         if (nue) {
                             //console.log('cool', nue, old.y, nue.y);
                             var y = old.y + nue.y;
-                            return {name: old.name, y: y, rda:old.rda};
+                            return {name: old.name, y: y, rda:old.rda,nutrient_id:old.nutrient_id};
                         } else {
                             return old;
                         }
@@ -114,18 +114,18 @@ angular.module('nutritionApp.view2', ['ngRoute'])
                 $scope.recipe.ingredients.totalled = _.map(nTotal,function(n){
 
                         console.log('new year');
-                        return { name:n.name, y:n.y, rda: n.rda};
+                        return { name:n.name, y:n.y, rda: n.rda,nutrient_id:n.nutrient_id};
 
                 });
             }
 
             console.log('newTotal',$scope.recipe.ingredients.totalled);
-            $scope.calculateChart(macroNuts,$scope.recipe.ingredients.totalled)
+            $scope.calculateChart(topNuts,$scope.recipe.ingredients.totalled)
 
         };
         $scope.calculateTotalNutrients = function(eqv,qty,nutrients){
             //This is used to calculate the ingredients nutritional values once added and
-           // console.log('eqv,qty',eqv,qty)
+           console.log('eqv,qty',nutrients)
             var totalledNuts = JSON.parse(JSON.stringify(nutrients));
             //clone needed to keep original content correct
             var totalled = _.map(totalledNuts,function(newC){
@@ -135,26 +135,50 @@ angular.module('nutritionApp.view2', ['ngRoute'])
                 //this converts to percentage RDA. I removed the div by 100 in multiplier to skip step of converting back to %
                 newC.value = Math.round(newC.value*100)/100;
                 //this converts to 2 decimals
-                return {name:newC.name, y:newC.value,rda:newC.rda};
+                return {name:newC.name, y:newC.value,rda:newC.rda, nutrient_id:newC.nutrient_id};
 
             });
             $scope.addNutrientsToTotal(totalled, $scope.recipe.ingredients.totalled)
 
         };
+
         $scope.calculateChart = function(nutArray,nutrientTotal){
             //console.log($scope.measureMultiplier);
-            $scope.topNuts = _.filter(nutrients, function (nutrients) {
-                return _.contains(topNuts, nutrients.nutrient_id);
+            var totalNuts = _.filter(nutrientTotal, function (nutrients) {
+                return _.contains(nutArray, nutrients.nutrient_id);
                 //this returns a list of the 'top' nutrients for an ingredient
             });
             //var totalledNuts = JSON.parse(JSON.stringify($scope.recipe.ingredients));
             //clone needed to keep original content correct
-            $scope.chartConfig.series[0].data = _.map(nutrientTotal,function(newC){
+            $scope.chartConfig.series[0].data = _.map(totalNuts,function(newC){
                 //console.log('rda',newC.rda);
                 console.log('value per',newC);
                 newC.value = (newC.y)/newC.rda;
                 //this converts to percentage RDA. I removed the div by 100 in multiplier to skip step of converting back to %
-                newC.value = Math.round(newC.value*100)/100;
+                newC.value = Math.round(newC.value*100);
+                //this converts to 2 decimals
+                var dude = {y:newC.value, name:newC.name};
+                console.log(dude);
+                return dude;
+                //this builds a new object for highcharts to easily consume and ensures it refreshes
+            });
+            //console.log('clog some stuff',$scope.chartConfig.series[0].data);
+        };
+
+        $scope.calculatePlaque = function(nutArray,nutrientTotal){
+            //console.log($scope.measureMultiplier);
+            var totalNuts = _.filter(nutrientTotal, function (nutrients) {
+                return _.contains(nutArray, nutrients.nutrient_id);
+                //this returns a list of the 'top' nutrients for an ingredient
+            });
+            //var totalledNuts = JSON.parse(JSON.stringify($scope.recipe.ingredients));
+            //clone needed to keep original content correct
+            $scope.chartConfig.series[0].data = _.map(totalNuts,function(newC){
+                //console.log('rda',newC.rda);
+                console.log('value per',newC);
+                newC.value = (newC.y)/newC.rda;
+                //this converts to percentage RDA. I removed the div by 100 in multiplier to skip step of converting back to %
+                newC.value = Math.round(newC.value*100);
                 //this converts to 2 decimals
                 var dude = {y:newC.value, name:newC.name};
                 console.log(dude);
@@ -174,12 +198,32 @@ angular.module('nutritionApp.view2', ['ngRoute'])
             $scope.calculateTotalNutrients(item.eqv,qty, nutrients);
 
         };
+
         $scope.chartConfig =   {
 
             options: {
                 chart: {
-                    type: 'column'
+                    backgroundColor: 'rgba(250,250,250,.5)',
+                    borderColor: '#000000',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    type: 'column',
+                    shadow: false
                 },
+                labels: {
+                    step:5
+                },
+                plotOptions: {
+                    column: {
+                        borderColor: '#000000',
+                        color: '#238708',
+                        dataLabels: {
+                            enabled: true,
+                            format: '{y} %'
+                        }
+                    }
+                },
+
                 drilldown:{
                     series: [{
                         id:'dudes',
@@ -202,6 +246,7 @@ angular.module('nutritionApp.view2', ['ngRoute'])
             },
             series: [
                 {
+                    name: 'Nutrients',
                     data: [],
                     tooltip: {
                         pointFormat: '<p>{point.y}%</p>'
@@ -223,13 +268,11 @@ angular.module('nutritionApp.view2', ['ngRoute'])
                     text:"Percent"
                 }
             },
+
             loading: false
 
         };
-        $scope.products = [
-            {name:'Apple',category:'fruit'},
-            {name:'Banana',category:'fruit'}
-        ]
+
 
     });
 
