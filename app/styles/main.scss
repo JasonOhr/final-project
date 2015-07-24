@@ -180,8 +180,14 @@ a:visited {
   float: left;
   width: 45%;
   clear: both;
-}
 
+}
+.inside-search-results {
+  background-color: rgba(250,250,250,0.6);
+  border-radius: 5px;
+  border: 1px solid black;
+  margin: 10px 0;
+}
 .button {
   height: 23px;
   font-size: 14px;

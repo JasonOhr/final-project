@@ -6,13 +6,15 @@
         <!--<label><input class="search-checkbox" type="checkbox" ng-model="checkbox"/> Starts with</label>-->
         <div>Limit search results to <input class="input-query" ng-model="searchLimit" size="5"></div>
 
+        <div class="inside-search-results">
         <ul>
-        <li class = 'ingredient-list' ng-repeat="nutrient in nutrition | filter:{name:query}:startsWith | limitTo:searchLimit | range:selectedPage:pageSize ">
-            <button class="custom-ingredient-button button fa fa-plus-circle" ng-click="populateNew(nutrient.ndbno, nutrient.name)" ng-show="isLoggedIn"></button>
-            <button class="inspect-ingredient-button button "><a href="#/ingredients/{{nutrient.ndbno}}"><span class="fa fa-leaf"></span></a></button>
-            <span class="nutrient-result-name">{{nutrient.name}}</span>
-        </li>
-    </ul>
+            <li class = 'ingredient-list' ng-repeat="nutrient in nutrition | filter:{name:query}:startsWith | limitTo:searchLimit | range:selectedPage:pageSize ">
+                <button class="custom-ingredient-button button fa fa-plus-circle" ng-click="populateNew(nutrient.ndbno, nutrient.name)" ng-show="isLoggedIn"></button>
+                <button class="inspect-ingredient-button button "><a href="#/ingredients/{{nutrient.ndbno}}"><span class="fa fa-leaf"></span></a></button>
+                <span class="nutrient-result-name">{{nutrient.name}}</span>
+            </li>
+        </ul>
+        </div>
         <div class="">
             <a ng-repeat="nutrient in nutrition | limitTo:searchLimit | pageCount:pageSize"
                ng-click="selectPage($index + 1)" class='other-pages'
@@ -34,11 +36,13 @@
         <button class="button" ng-click="saveIngredient(addIngredient,newIngredient.ndbno)">Add</button>
         <button class="button" ng-click="clearNewIngredient()">Cancel</button>
     </div>
-<ul>
-    <li class = 'ingredient-list' ng-repeat="ingredient in customIngredients.results | filter:{name:query} | range:selectedPage2:pageSize | orderBy:'name'">
-        <a href="#/ingredients/{{ingredient.ndbno}}">{{ingredient.name}}</a>
-    </li>
-</ul>
+    <div class="inside-search-results">
+        <ul>
+            <li class = 'ingredient-list' ng-repeat="ingredient in customIngredients.results | filter:{name:query} | range:selectedPage2:pageSize | orderBy:'name'">
+                <a href="#/ingredients/{{ingredient.ndbno}}">{{ingredient.name}}</a>
+            </li>
+        </ul>
+    </div>
     </div>
     <div >
         <a ng-repeat="ingredient in customIngredients.results |  pageCount:pageSize"
