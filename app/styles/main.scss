@@ -118,11 +118,13 @@ body {
 a.other-pages,
 a.current-page{
   height: 25px;
-  min-width: 15px;
-  padding: 0 2px;
-  display: inline-block;-webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
+  min-width: 25px;
+  text-align: center;
+  //padding: 0 2px;
+  display: inline-block;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
   margin-left: 5px;
 }
 a.other-pages {
@@ -135,14 +137,20 @@ a.current-page,
 a.current-page2{
 
 
-  background-color: #000088;
-  color:lightgray;
-  border: 1px solid darkgray;
+  background-color: green;
+  color:#E4F1FA;
+  border: 1px solid #42693B;
 
 }
 a.current-page:hover {
   color:white;
   background-color: royalblue;
+}
+a.other-pages:hover {
+  background-color: #B3BE89;
+  color:black;
+  border: 1px solid black;
+
 }
 .custom-shell {
   height: 700px;
