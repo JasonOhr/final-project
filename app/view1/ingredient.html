@@ -1,17 +1,17 @@
 
 <p>{{ingredientReport.report.food.name}}</p>
-<div class="ingredient-measure" option="charInfo">
+
+<div class="nutrition-facts">
+    <h1>Nutrition Facts</h1>
+    <p>Serving Size <input ng-model="measurement.qty" size="3" ng-change="convertToNumber()">
+    <span class="ingredient-measure" option="charInfo">
     <select ng-options="item.label for item in measure"
             ng-model="measurement"
             ng-change="convertToNumber()"
             >
     </select>
-    <p>{{measureMultiplier}}</p>
-
-</div>
-<div class="nutrition-facts">
-    <h1>Nutrition Facts</h1>
-    <p>Serving Size <input ng-model="measurement.qty" size="3" ng-change="convertToNumber()"> {{measurement.label}}</p>
+</span>
+    </p>
 </div>
 
 <div class="nutrition-box">

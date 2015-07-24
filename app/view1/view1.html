@@ -1,22 +1,25 @@
+<h1 class="title full">Ingredient Search</h1>
+<div class="main-ingredient-search">
 
-<div>Search: <input id="mainQuery" ng-model="query"> </div>
-<!--<label><input class="search-checkbox" type="checkbox" ng-model="checkbox"/> Starts with</label>-->
-<div>Limit search results to <input  ng-model="searchLimit" size="5"></div>
+    <div class="search-results">
+        <div>Search: <input class="input-query" id="mainQuery" ng-model="query"> </div>
+        <!--<label><input class="search-checkbox" type="checkbox" ng-model="checkbox"/> Starts with</label>-->
+        <div>Limit search results to <input class="input-query" ng-model="searchLimit" size="5"></div>
 
-<div class="search-results">
-<ul>
-    <li class = 'ingredient-list' ng-repeat="nutrient in nutrition | filter:{name:query}:startsWith | limitTo:searchLimit | range:selectedPage:pageSize ">
-        <button class="custom-ingredient-button button fa fa-plus-circle" ng-click="populateNew(nutrient.ndbno, nutrient.name)" ng-show="isLoggedIn"></button>
-        <button class="inspect-ingredient-button button "><a href="#/ingredients/{{nutrient.ndbno}}"><span class="fa fa-leaf"></span></a></button>
-        <span class="nutrient-result-name">{{nutrient.name}}</span>
-    </li>
-</ul>
-    <div class="">
-        <a ng-repeat="nutrient in nutrition | limitTo:searchLimit | pageCount:pageSize"
-           ng-click="selectPage($index + 1)" class='other-pages'
-           ng-class="getPageClass($index + 1)">
-            {{$index + 1}}
-        </a>
+        <ul>
+        <li class = 'ingredient-list' ng-repeat="nutrient in nutrition | filter:{name:query}:startsWith | limitTo:searchLimit | range:selectedPage:pageSize ">
+            <button class="custom-ingredient-button button fa fa-plus-circle" ng-click="populateNew(nutrient.ndbno, nutrient.name)" ng-show="isLoggedIn"></button>
+            <button class="inspect-ingredient-button button "><a href="#/ingredients/{{nutrient.ndbno}}"><span class="fa fa-leaf"></span></a></button>
+            <span class="nutrient-result-name">{{nutrient.name}}</span>
+        </li>
+    </ul>
+        <div class="">
+            <a ng-repeat="nutrient in nutrition | limitTo:searchLimit | pageCount:pageSize"
+               ng-click="selectPage($index + 1)" class='other-pages'
+               ng-class="getPageClass($index + 1)">
+                {{$index + 1}}
+            </a>
+        </div>
     </div>
 </div>
 
@@ -24,9 +27,9 @@
 <div class="custom-ingredients">
     <div class="inner-shell">
     <div class="add-new-ingredient" ng-show="isLoggedIn">
-        <div><span>Original Name</span><span>{{newIngredient.name}}</span></div>
+        <div class="original-name"><span>Original Name</span><span>{{newIngredient.name}}</span></div>
         <div>
-        Custom Name<input id="customName" ng-model="addIngredient">
+            Custom Name<input class="input-query" id="customName" ng-model="addIngredient">
         </div>
         <button class="button" ng-click="saveIngredient(addIngredient,newIngredient.ndbno)">Add</button>
         <button class="button" ng-click="clearNewIngredient()">Cancel</button>
