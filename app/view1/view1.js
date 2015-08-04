@@ -44,6 +44,7 @@ angular.module('nutritionApp.ingredients', ['ngRoute'])
         //console.log('in local', $scope.nutrition);
       }else{
         $http.get('ingredients/ingredients.json').success(function(data) {
+            console.log('here',data);
           localStorage.setItem('nutritionData',JSON.stringify(data));
           $scope.nutrition = data;
 

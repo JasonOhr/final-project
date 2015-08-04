@@ -49,7 +49,7 @@ angular.module('ingredientGraph',[])
         return {
             link: function(scope, el, attrs) {
                 var nutrients = scope[attrs["options"]];
-                var chartConfig
+                var chartConfig;
 
 
                 //var options = scope.$eval(attrs.ingredientChart);
